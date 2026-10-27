@@ -5876,10 +5876,11 @@ CursorMorph.prototype.processInput = function (event) {
         filteredContent,
         caret;
 
-    // a numeric field holds a whole number: undo any change that would end that
+    // a numeric field holds a whole number: undo any change that would end that,
+    // leaving the caret where the refused text went in
     if (target.isNumeric && !/^-?[0-9]*$/.test(textarea.value)) {
-        caret = textarea.selectionStart -
-            (textarea.value.length - target.text.length);
+        caret = textarea.selectionStart - (textarea.value.length -
+            target.text.length + Math.abs(target.endMark - target.startMark));
         textarea.value = target.text;
         caret = Math.max(0, Math.min(caret, textarea.value.length));
         textarea.setSelectionRange(caret, caret);
@@ -12495,6 +12496,28 @@ WorldMorph.prototype.initEventListeners = function () {
         event => {
             event.preventDefault();
             this.hand.processMouseUp(event);
+        },
+        false
+    );
+
+    // MicroBlocks port: a press on the canvas released over HTML on or beside it, or
+    // outside the window, never reaches the canvas. A held morph is dropped where the
+    // button came up (off the canvas, on the world); a press that never became a drag
+    // just ends, with no grab and no click.
+    window.addEventListener(
+        "mouseup",
+        event => {
+            // the canvas listener has already cleared mouseButton, unless it threw
+            if (event.target === canvas || !this.hand.mouseButton) return;
+            if (this.hand.children.length) {
+                this.hand.processMouseMove(event);
+                this.hand.processMouseUp(event);
+            } else {
+                this.hand.mouseButton = null;
+                this.hand.morphToGrab = null;
+                this.hand.inputTarget = null;
+                this.hand.clickTarget = null;
+            }
         },
         false
     );

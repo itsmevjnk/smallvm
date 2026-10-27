@@ -155,7 +155,17 @@ Menus.project = {
 		},
 		{
 			label: 'Open',
-			action: () => { GP.apiCall('project.open'); }
+			action: () => {
+				// The GP IDE has no MB_editor; it opens through its own project.open.
+				if (typeof MB_editor == 'undefined') { GP.apiCall('project.open'); return; }
+				MB_editor.openProjectMenu();
+			}
+		},
+		{
+			label: 'Open from URL',
+			action: () => { GP.apiCall('project.openFromURL'); },
+			// Served by the Javascript engine only; the GP IDE has no such endpoint.
+			hidden: () => { return typeof MB_editor == 'undefined'; }
 		},
 		{
 			label: 'Open from board',
