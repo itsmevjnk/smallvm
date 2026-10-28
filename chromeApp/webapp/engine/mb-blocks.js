@@ -3146,7 +3146,10 @@ HandMorph.prototype.movedPastGrabThreshold = function (event, threshold) {
 
 // A finger lands with some jitter, so a touch becomes a drag only once it has
 // moved touchSlop CSS pixels from where it went down, whatever the block size.
+// It stops being a long press (a right click after 350 ms) sooner, at
+// touchHoldSlop, so a slow drag is not taken for a hold.
 HandMorph.prototype.touchSlop = 8;
+HandMorph.prototype.touchHoldSlop = 4;
 
 HandMorph.prototype.processTouchStartWithoutSlop = HandMorph.prototype.processTouchStart;
 HandMorph.prototype.processTouchStart = function (event) {
@@ -3159,13 +3162,14 @@ HandMorph.prototype.processTouchStart = function (event) {
 };
 
 HandMorph.prototype.processTouchMove = function (event) {
-	var touch = event.touches[0];
+	var touch = event.touches[0], distance;
 	MorphicPreferences.isTouchDevice = true;
 	if ((event.touches.length !== 1) || !this.touchStartPage) return;
 	if (!this.touchMoved) {
-		if (this.touchStartPage.distanceTo(new Point(touch.pageX, touch.pageY)) <= this.touchSlop) return;
+		distance = this.touchStartPage.distanceTo(new Point(touch.pageX, touch.pageY));
+		if (distance > this.touchHoldSlop) clearInterval(this.touchHoldTimeout);
+		if (distance <= this.touchSlop) return;
 		this.touchMoved = true;
-		clearInterval(this.touchHoldTimeout);
 	}
 	this.processMouseMove(this.touchPoint(touch));
 };
