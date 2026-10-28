@@ -3112,6 +3112,7 @@ HandMorph.prototype.processMouseDownWithoutShift = HandMorph.prototype.processMo
 HandMorph.prototype.processMouseDown = function (event) {
 	this.shiftKey = !!(event && event.shiftKey);
 	this.ctrlPress = !!(event && event.ctrlKey && (event.button === 0));
+	if (event instanceof MouseEvent) this.fingerDown = false; // a touchscreen laptop can mix the two
 	MB_editor.removeResultBubbles(); // a click anywhere takes the board's values away
 	this.processMouseDownWithoutShift(event);
 };
@@ -3120,9 +3121,12 @@ HandMorph.prototype.processMouseMoveWithoutCopying = HandMorph.prototype.process
 HandMorph.prototype.processMouseMove = function (event) {
 	var threshold = MorphicPreferences.grabThreshold;
 	// morphic's own test is a straight-line distance in world units, which grow with
-	// the block size; answer it here instead (a touch keeps morphic's test)
+	// the block size; answer it here instead, in screen pixels for a mouse and from
+	// the touch slop for a finger
 	if (this.grabPosition && (event instanceof MouseEvent)) {
 		MorphicPreferences.grabThreshold = this.movedPastGrabThreshold(event, threshold) ? -1 : Infinity;
+	} else if (this.grabPosition && this.fingerDown) {
+		MorphicPreferences.grabThreshold = this.touchMoved ? -1 : Infinity;
 	}
 	try {
 		this.processMouseMoveCopyingWithCtrl(event);
@@ -3138,6 +3142,68 @@ HandMorph.prototype.movedPastGrabThreshold = function (event, threshold) {
 		dx = event.pageX - canvas.x - (this.grabPosition.x * ZOOM),
 		dy = event.pageY - canvas.y - (this.grabPosition.y * ZOOM);
 	return Math.round(Math.max(Math.abs(dx), Math.abs(dy))) > threshold;
+};
+
+// A finger lands with some jitter, so a touch becomes a drag only once it has
+// moved touchSlop CSS pixels from where it went down, whatever the block size.
+HandMorph.prototype.touchSlop = 8;
+
+HandMorph.prototype.processTouchStartWithoutSlop = HandMorph.prototype.processTouchStart;
+HandMorph.prototype.processTouchStart = function (event) {
+	if (event.touches.length === 1) {
+		this.fingerDown = true;
+		this.touchMoved = false;
+		this.touchStartPage = new Point(event.touches[0].pageX, event.touches[0].pageY);
+	}
+	this.processTouchStartWithoutSlop(event);
+};
+
+HandMorph.prototype.processTouchMove = function (event) {
+	var touch = event.touches[0];
+	MorphicPreferences.isTouchDevice = true;
+	if ((event.touches.length !== 1) || !this.touchStartPage) return;
+	if (!this.touchMoved) {
+		if (this.touchStartPage.distanceTo(new Point(touch.pageX, touch.pageY)) <= this.touchSlop) return;
+		this.touchMoved = true;
+		clearInterval(this.touchHoldTimeout);
+	}
+	this.processMouseMove(this.touchPoint(touch));
+};
+
+HandMorph.prototype.processTouchEndWithoutSlop = HandMorph.prototype.processTouchEnd;
+HandMorph.prototype.processTouchEnd = function (event) {
+	try {
+		this.processTouchEndWithoutSlop(event);
+	} finally {
+		if (!event.touches || (event.touches.length === 0)) this.endTouch();
+	}
+};
+
+HandMorph.prototype.endTouch = function () {
+	this.fingerDown = false;
+	this.touchMoved = false;
+	this.touchStartPage = null;
+};
+
+// A cancelled touch (the browser or the system took the gesture) ends the press
+// with no click; a block being dragged is dropped where it is.
+HandMorph.prototype.processTouchCancel = function () {
+	clearInterval(this.touchHoldTimeout);
+	if (this.children.length) {
+		this.processMouseUp({button: 0});
+	} else {
+		this.mouseButton = null;
+		this.morphToGrab = null;
+		this.inputTarget = null;
+		this.clickTarget = null;
+	}
+	this.endTouch();
+};
+
+WorldMorph.prototype.initEventListenersWithoutTouchCancel = WorldMorph.prototype.initEventListeners;
+WorldMorph.prototype.initEventListeners = function () {
+	this.initEventListenersWithoutTouchCancel();
+	this.worldCanvas.addEventListener('touchcancel', () => this.hand.processTouchCancel(), false);
 };
 
 // morphic makes a press with Ctrl held a right click, whose menu opens on release.
