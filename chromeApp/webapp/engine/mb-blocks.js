@@ -3113,6 +3113,10 @@ HandMorph.prototype.processMouseDown = function (event) {
 	this.shiftKey = !!(event && event.shiftKey);
 	this.ctrlPress = !!(event && event.ctrlKey && (event.button === 0));
 	if (event instanceof MouseEvent) this.fingerDown = false; // a touchscreen laptop can mix the two
+	if (this.fingerDown && this.touchAim && event && (event.button === 2)) {
+		this.setPosition(this.position().subtract(this.touchAim.divideBy(ZOOM)));
+		this.touchAim = null;
+	}
 	MB_editor.removeResultBubbles(); // a click anywhere takes the board's values away
 	this.processMouseDownWithoutShift(event);
 };
@@ -3159,6 +3163,7 @@ HandMorph.prototype.processTouchStart = function (event) {
 		this.touchStartPage = new Point(event.touches[0].pageX, event.touches[0].pageY);
 		this.touchStartTime = Date.now();
 		this.touchStirredAt = null;
+		this.touchAim = this.touchAimFor(event.touches[0]);
 	}
 	this.processTouchStartWithoutSlop(event);
 };
@@ -3201,6 +3206,66 @@ HandMorph.prototype.scrollInsteadOfGrabbing = function () {
 	frame.mouseDownLeft(this.grabPosition);
 };
 
+// Slots are smaller than a fingertip, so on touch a slot also takes a press
+// within a touchTarget CSS px square centred on it, when the press lands on a
+// command block's body or the empty scripting area. Labels, reporters and hat
+// blocks keep their presses, so blocks are still dragged by them, and a long
+// press is not aimed, so it opens the menu of what is under the finger.
+HandMorph.prototype.touchTarget = 44;
+
+HandMorph.prototype.touchAimFor = function (touch) {
+	var canvas = getDocumentPositionOf(this.world.worldCanvas),
+		pos = new Point(touch.pageX - canvas.x, touch.pageY - canvas.y).divideBy(ZOOM),
+		morph = this.world.topMorphAt(pos),
+		scripts = null,
+		slot,
+		b;
+	if (this.world.activeMenu || this.children.length) return null;
+	if (morph instanceof ScriptsMorph) scripts = morph;
+	if ((morph instanceof CommandBlockMorph) && !(morph instanceof HatBlockMorph) && !morph.isTemplate) {
+		scripts = morph.parentThatIsA(ScriptsMorph);
+	}
+	slot = scripts && this.slotNear(scripts, pos, this.touchTarget / ZOOM);
+	if (!slot) return null;
+	b = slot.bounds.insetBy(1);
+	return new Point(
+		Math.min(Math.max(pos.x, b.left()), b.right()) - pos.x,
+		Math.min(Math.max(pos.y, b.top()), b.bottom()) - pos.y
+	).multiplyBy(ZOOM);
+};
+
+HandMorph.prototype.slotNear = function (scripts, pos, size) {
+	// the input slot nearest pos whose size-wide square (or its own bounds, if larger) holds pos
+	var best = null, bestDistance = Infinity;
+	scripts.children.forEach((script) => {
+		if (!(script instanceof BlockMorph) || !script.fullBounds().expandBy(size).containsPoint(pos)) return;
+		script.allChildren().forEach((m) => {
+			var b, dx, dy, d;
+			if (!(m instanceof InputSlotMorph) || !m.isVisible) return;
+			b = m.bounds;
+			dx = Math.max(b.left() - pos.x, 0, pos.x - b.right());
+			dy = Math.max(b.top() - pos.y, 0, pos.y - b.bottom());
+			if ((dx > Math.max(0, size - b.width()) / 2) || (dy > Math.max(0, size - b.height()) / 2)) return;
+			d = Math.sqrt((dx * dx) + (dy * dy));
+			if (d < bestDistance) {
+				best = m;
+				bestDistance = d;
+			}
+		});
+	});
+	return best;
+};
+
+HandMorph.prototype.touchPointWithoutAim = HandMorph.prototype.touchPoint;
+HandMorph.prototype.touchPoint = function (touch) {
+	var point = this.touchPointWithoutAim(touch);
+	if (this.touchAim) {
+		point.pageX += this.touchAim.x;
+		point.pageY += this.touchAim.y;
+	}
+	return point;
+};
+
 HandMorph.prototype.processTouchEndWithoutSlop = HandMorph.prototype.processTouchEnd;
 HandMorph.prototype.processTouchEnd = function (event) {
 	try {
@@ -3214,6 +3279,7 @@ HandMorph.prototype.endTouch = function () {
 	this.fingerDown = false;
 	this.touchMoved = false;
 	this.touchStartPage = null;
+	this.touchAim = null;
 };
 
 // A cancelled touch (the browser or the system took the gesture) ends the press
