@@ -3157,6 +3157,8 @@ HandMorph.prototype.processTouchStart = function (event) {
 		this.fingerDown = true;
 		this.touchMoved = false;
 		this.touchStartPage = new Point(event.touches[0].pageX, event.touches[0].pageY);
+		this.touchStartTime = Date.now();
+		this.touchStirredAt = null;
 	}
 	this.processTouchStartWithoutSlop(event);
 };
@@ -3167,11 +3169,36 @@ HandMorph.prototype.processTouchMove = function (event) {
 	if ((event.touches.length !== 1) || !this.touchStartPage) return;
 	if (!this.touchMoved) {
 		distance = this.touchStartPage.distanceTo(new Point(touch.pageX, touch.pageY));
-		if (distance > this.touchHoldSlop) clearInterval(this.touchHoldTimeout);
+		if (distance > this.touchHoldSlop) {
+			clearInterval(this.touchHoldTimeout);
+			if (this.touchStirredAt === null) this.touchStirredAt = Date.now();
+		}
 		if (distance <= this.touchSlop) return;
 		this.touchMoved = true;
+		if (this.touchScrollsPalette(touch)) this.scrollInsteadOfGrabbing();
 	}
 	this.processMouseMove(this.touchPoint(touch));
+};
+
+// On a palette block a mostly vertical swipe scrolls the palette. A sideways drag,
+// or a drag after the finger has rested touchHoldToDrag ms, pulls the block out.
+HandMorph.prototype.touchHoldToDrag = 200;
+
+HandMorph.prototype.touchScrollsPalette = function (touch) {
+	var block = this.morphToGrab,
+		palette = (typeof MB_editor !== 'undefined') && MB_editor.palette;
+	return !!block && block.isTemplate && (this.mouseButton === 'left') && !!palette &&
+		(block.parentThatIsA(ScrollFrameMorph) === palette) &&
+		(palette.contents.height() > palette.height()) &&
+		(Math.abs(touch.pageY - this.touchStartPage.y) > Math.abs(touch.pageX - this.touchStartPage.x)) &&
+		((this.touchStirredAt - this.touchStartTime) < this.touchHoldToDrag);
+};
+
+HandMorph.prototype.scrollInsteadOfGrabbing = function () {
+	var frame = this.morphToGrab.parentThatIsA(ScrollFrameMorph);
+	this.morphToGrab = null;
+	this.clickTarget = null; // the lift ends a scroll, not a click
+	frame.mouseDownLeft(this.grabPosition);
 };
 
 HandMorph.prototype.processTouchEndWithoutSlop = HandMorph.prototype.processTouchEnd;
