@@ -109,6 +109,12 @@ class MB_Editor {
 			if (!((typeof GP === 'object') && GP.delegateKeyboardEvents)) HTMLTextAreaElement.prototype.focus.call(this);
 		};
 
+		// The keyboard textarea keeps the focus after an edit ends, which on a touch screen keeps
+		// the soft keyboard up. A touch that ends with nothing being edited lets the keyboard go.
+		if (world.keyboardHandler) world.worldCanvas.addEventListener('touchend', () => {
+			if (!world.cursor && (document.activeElement === world.keyboardHandler)) world.keyboardHandler.blur();
+		});
+
 		// morphic takes a Cmd-click as a right click; the click event after it must not close its menu.
 		world.worldCanvas.addEventListener('click', (event) => {
 			if (event.metaKey) event.ignoreGlobalListener = true;
