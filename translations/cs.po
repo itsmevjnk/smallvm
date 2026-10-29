@@ -2816,7 +2816,7 @@ msgstr "WiFi vytvoř hotspot _ heslo _"
 
 #. Example WiFi network password
 msgid "Network_Password"
-msgstr "Síťové_heslo"
+msgstr "Síťové heslo"
 
 #. WiFi library block
 msgid "IP address"
