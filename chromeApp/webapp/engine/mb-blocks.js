@@ -3113,12 +3113,17 @@ HandMorph.prototype.processMouseDown = function (event) {
 	this.shiftKey = !!(event && event.shiftKey);
 	this.ctrlPress = !!(event && event.ctrlKey && (event.button === 0));
 	if (event instanceof MouseEvent) this.fingerDown = false; // a touchscreen laptop can mix the two
-	if (this.fingerDown && this.touchAim && event && (event.button === 2)) {
+	var longPress = this.fingerDown && event && (event.button === 2) && !(event instanceof MouseEvent);
+	if (longPress && this.touchAim) {
 		this.setPosition(this.position().subtract(this.touchAim.divideBy(ZOOM)));
 		this.touchAim = null;
 	}
 	MB_editor.removeResultBubbles(); // a click anywhere takes the board's values away
 	this.processMouseDownWithoutShift(event);
+	if (longPress) {
+		// remember what the long press opened a menu for, to grab it if the finger moves on
+		this.touchHeld = {morph: this.morphToGrab, position: this.grabPosition};
+	}
 };
 
 HandMorph.prototype.processMouseMoveWithoutCopying = HandMorph.prototype.processMouseMove;
@@ -3161,8 +3166,7 @@ HandMorph.prototype.processTouchStart = function (event) {
 		this.fingerDown = true;
 		this.touchMoved = false;
 		this.touchStartPage = new Point(event.touches[0].pageX, event.touches[0].pageY);
-		this.touchStartTime = Date.now();
-		this.touchStirredAt = null;
+		this.touchHeld = null;
 		this.touchAim = this.touchAimFor(event.touches[0]);
 	}
 	this.processTouchStartWithoutSlop(event);
@@ -3174,29 +3178,41 @@ HandMorph.prototype.processTouchMove = function (event) {
 	if ((event.touches.length !== 1) || !this.touchStartPage) return;
 	if (!this.touchMoved) {
 		distance = this.touchStartPage.distanceTo(new Point(touch.pageX, touch.pageY));
-		if (distance > this.touchHoldSlop) {
-			clearInterval(this.touchHoldTimeout);
-			if (this.touchStirredAt === null) this.touchStirredAt = Date.now();
-		}
+		if (distance > this.touchHoldSlop) clearInterval(this.touchHoldTimeout);
 		if (distance <= this.touchSlop) return;
 		this.touchMoved = true;
-		if (this.touchScrollsPalette(touch)) this.scrollInsteadOfGrabbing();
+		if (this.touchHeld) {
+			this.grabAfterLongPress();
+		} else if (this.touchScrollsPalette(touch)) {
+			this.scrollInsteadOfGrabbing();
+		}
 	}
 	this.processMouseMove(this.touchPoint(touch));
 };
 
-// On a palette block a mostly vertical swipe scrolls the palette. A sideways drag,
-// or a drag after the finger has rested touchHoldToDrag ms, pulls the block out.
-HandMorph.prototype.touchHoldToDrag = 200;
-
+// On a palette block a mostly vertical swipe scrolls the palette, and a sideways
+// drag pulls the block out. A drag after a long press pulls it out whichever way.
 HandMorph.prototype.touchScrollsPalette = function (touch) {
 	var block = this.morphToGrab,
 		palette = (typeof MB_editor !== 'undefined') && MB_editor.palette;
 	return !!block && block.isTemplate && (this.mouseButton === 'left') && !!palette &&
 		(block.parentThatIsA(ScrollFrameMorph) === palette) &&
 		(palette.contents.height() > palette.height()) &&
-		(Math.abs(touch.pageY - this.touchStartPage.y) > Math.abs(touch.pageX - this.touchStartPage.x)) &&
-		((this.touchStirredAt - this.touchStartTime) < this.touchHoldToDrag);
+		(Math.abs(touch.pageY - this.touchStartPage.y) > Math.abs(touch.pageX - this.touchStartPage.x));
+};
+
+HandMorph.prototype.grabAfterLongPress = function () {
+	// A finger that moves on after a long press closes the menu and takes the block
+	// it was on, as a long press then a drag does on a phone's home screen.
+	var held = this.touchHeld.morph, position = this.touchHeld.position;
+	this.touchHeld = null;
+	if (!held || !(held.isDraggable || held.isTemplate)) return;
+	if (this.world.activeMenu) this.world.activeMenu.destroy();
+	if (typeof Menus !== 'undefined') Menus.close();
+	this.mouseButton = 'left';
+	this.morphToGrab = held;
+	this.grabPosition = position;
+	this.clickTarget = null;
 };
 
 HandMorph.prototype.scrollInsteadOfGrabbing = function () {
