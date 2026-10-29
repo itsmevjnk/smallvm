@@ -114,6 +114,9 @@ class MB_Editor {
 		if (world.keyboardHandler) world.worldCanvas.addEventListener('touchend', () => {
 			if (!world.cursor && (document.activeElement === world.keyboardHandler)) world.keyboardHandler.blur();
 		});
+		// A chrome menu closes on a click outside it, and morphic's touchstart prevents
+		// that click, so a touch on the canvas closes the menu itself.
+		world.worldCanvas.addEventListener('touchstart', () => { if (typeof Menus !== 'undefined') Menus.close(); });
 
 		// morphic takes a Cmd-click as a right click; the click event after it must not close its menu.
 		world.worldCanvas.addEventListener('click', (event) => {
