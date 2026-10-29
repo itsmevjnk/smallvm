@@ -4,8 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
 "PO-Revision-Date: 2026-10-29 22:11+0000\n"
-"Last-Translator: Miroslav Klimoš <user-"
-"97124@users.noreply.hosted.weblate.org>\n"
+"Last-Translator: Sam McHardy <sammchardy@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/"
 "cs/>\n"
 "Language: cs\n"
@@ -2805,7 +2804,7 @@ msgstr "WiFi připojení k AP _ heslo _"
 
 #. Example WiFi network name
 msgid "Network_Name"
-msgstr "Jméno_sítě"
+msgstr "Jméno sítě"
 
 #. WiFi library block
 msgid "IP _ gateway _ subnet _"
