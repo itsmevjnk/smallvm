@@ -7025,11 +7025,11 @@ msgstr "MotionKit nastav servo _ do úhlu _ (0-180)"
 
 #. Calliope MotionKit library block
 msgid "MotionKit set _ servo _ to _ degrees"
-msgstr "MotionKit nastav servo _ do úhlu _ °"
+msgstr "MotionKit nastav _ servo _ do úhlu _"
 
 #. Calliope MotionKit library block
 msgid "MotionKit rotate servo _ _ speed _ (0~100)"
-msgstr "MotionKit roztoč servo _ _ rychlostí _ % (0-100)"
+msgstr "MotionKit roztoč servo _ _ rychlostí _ (0-100)"
 
 #. LCD Display library block
 msgid "draw char _ on LCD line _ column _"
