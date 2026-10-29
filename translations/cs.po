@@ -4,7 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
 "PO-Revision-Date: 2026-10-29 22:11+0000\n"
-"Last-Translator: Sam McHardy <sammchardy@users.noreply.hosted.weblate.org>\n"
+"Last-Translator: Miroslav Klimoš <user-"
+"97124@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/"
 "cs/>\n"
 "Language: cs\n"
@@ -2804,7 +2805,7 @@ msgstr "WiFi připojení k AP _ heslo _"
 
 #. Example WiFi network name
 msgid "Network_Name"
-msgstr "Jméno sítě"
+msgstr "Jméno_sítě"
 
 #. WiFi library block
 msgid "IP _ gateway _ subnet _"
@@ -2816,7 +2817,7 @@ msgstr "WiFi vytvoř hotspot _ heslo _"
 
 #. Example WiFi network password
 msgid "Network_Password"
-msgstr "Síťové heslo"
+msgstr "Síťové_heslo"
 
 #. WiFi library block
 msgid "IP address"
@@ -7029,7 +7030,7 @@ msgstr "MotionKit nastav _ servo _ do úhlu _"
 
 #. Calliope MotionKit library block
 msgid "MotionKit rotate servo _ _ speed _ (0~100)"
-msgstr "MotionKit roztoč servo _ _ rychlostí _ (0-100)"
+msgstr "MotionKit roztoč servo _ _ rychlostí _ % (0-100)"
 
 #. LCD Display library block
 msgid "draw char _ on LCD line _ column _"
