@@ -3,9 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2026-10-29 22:11+0000\n"
-"Last-Translator: Miroslav Klimoš <user-"
-"97124@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-10-30 09:35+0000\n"
+"Last-Translator: John Maloney <jhmaloney@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/"
 "cs/>\n"
 "Language: cs\n"
@@ -7469,10 +7468,12 @@ msgid "no matches"
 msgstr "nenalezeno"
 
 #. Library folder
+#, fuzzy
 msgid "folder;Nezha"
 msgstr "Nezha"
 
 #. Library folder
+#, fuzzy
 msgid "folder;Planet X"
 msgstr "Planet X"
 
