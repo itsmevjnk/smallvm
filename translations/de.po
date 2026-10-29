@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-10-29 12:49+0000\n"
+"PO-Revision-Date: 2026-10-29 18:54+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -9244,7 +9244,7 @@ msgstr "drehe Motor _ Tempo _ % Richtung _ auf absoluten Winkel _ °"
 
 #. Nezha ESP32 Motor library block
 msgid "turn motor _ speed _ % direction _ for _ _"
-msgstr "drehe Motor _ Tempo _ % Richtung _ für _ _"
+msgstr "drehe Motor _ mit Tempo _ % Richtung _ für _ _"
 
 #. Nezha ESP32 Motor library block
 msgid "reset motor _ position"
@@ -9312,7 +9312,7 @@ msgstr "Planet X Farbe"
 
 #. Planet X Color library block
 msgid "color sensor detected _ ?"
-msgstr "Farbsensor erkannt _ ?"
+msgstr "Farbsensor _ erkannt?"
 
 #. Planet X Color library block
 msgid "color sensor hue (0-360)"
@@ -9320,7 +9320,7 @@ msgstr "Farbsensor Farbton (0-360)"
 
 #. Library name
 msgid "Planet X Gesture"
-msgstr "Planet X Gesten"
+msgstr "Planet X Gestensensor"
 
 #. Planet X Gesture library choice
 msgid "up"
@@ -9336,11 +9336,11 @@ msgstr "Welle"
 
 #. Planet X Gesture library block
 msgid "gesture sensor detected _ ?"
-msgstr "Gestensensor erkannt _ ?"
+msgstr "Gestensensor _ erkannt?"
 
 #. Library name
 msgid "Planet X Speech"
-msgstr "Planet X Rede"
+msgstr "Planet X Sprache"
 
 #. Planet X Speech library choice
 msgid "hello Xiaoen"
@@ -9460,19 +9460,19 @@ msgstr "gelernter Text 10"
 
 #. Planet X Speech library block
 msgid "speech recognition sensor clear learned phrases"
-msgstr "Spracherkennungssensor lösche gelernte Texte"
+msgstr "Spracherkennung lösche gelernte Texte"
 
 #. Planet X Speech library block
 msgid "speech recognition sensor enter learning mode"
-msgstr "Spracherkennungssensor beginne Lernmodus"
+msgstr "Spracherkennung beginne Lernmodus"
 
 #. Planet X Speech library block
 msgid "speech recognition sensor heard _ ?"
-msgstr "Spracherkennungssensor hat _ gehört?"
+msgstr "Spracherkennung Sensor hat _ gehört?"
 
 #. Planet X Speech library block
 msgid "speech recognition sensor current code"
-msgstr "Spracherkennungssensor aktueller Code"
+msgstr "Spracherkennung aktueller Code"
 
 #. Library name
 msgid "Planet X AI Lens"
@@ -9624,7 +9624,7 @@ msgstr "Karussell"
 
 #. Planet X AI Lens library block
 msgid "AI camera image contains _ ball?"
-msgstr "KI-Kamerabild enthält Ball _ ?"
+msgstr "KI-Kamera Bild enthält Ball _ ?"
 
 #. Planet X AI Lens library block
 msgid "AI camera ball _ value"
@@ -9636,11 +9636,11 @@ msgstr "KI-Kamera Ballanzahl"
 
 #. Planet X AI Lens library block
 msgid "AI camera capture image"
-msgstr "KI-Kamera fotografierte Bild"
+msgstr "KI-Kamera erfasse Bild"
 
 #. Planet X AI Lens library block
 msgid "AI camera any card _ value"
-msgstr "KI-Kamera jede Karte _ Wert"
+msgstr "KI-Kamera beliebige Karte _ Wert"
 
 #. Planet X AI Lens library block
 msgid "AI camera card count"
@@ -9741,3 +9741,11 @@ msgstr "Planet X WiFi"
 #. Library name
 msgid "Planet X Support"
 msgstr "Planet X Support"
+
+#. Library folder
+msgid "folder;Nezha"
+msgstr "Nezha"
+
+#. Library folder
+msgid "folder;Planet X"
+msgstr "Planet X"
