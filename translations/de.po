@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-10-30 09:35+0000\n"
+"PO-Revision-Date: 2026-10-31 11:51+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -9132,7 +9132,7 @@ msgstr "beide, gegenläufig"
 
 #. String in file picker and library dialogs
 msgid "That URL does not return a MicroBlocks library."
-msgstr "Dieser URL liefert keine MicroBlocks-Bibiothek."
+msgstr "Diese URL liefert keine MicroBlocks-Bibiothek."
 
 #. KidsIOT library choice. Move both motors at the same rate, but opposite to
 #. each other. If value is 50, motor A will move at speed 50 and motor B will
