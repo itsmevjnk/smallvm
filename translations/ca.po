@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-10-30 09:35+0000\n"
+"PO-Revision-Date: 2026-10-31 11:51+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -5284,7 +5284,7 @@ msgstr "biblioteca d'usuari"
 
 #. String in file picker and library dialogs
 msgid "Add Library"
-msgstr "Afegeix una biblioteca"
+msgstr "Afegeix biblioteca"
 
 #. the %1 tag should be kept intact. Seconds remaining for a process to finish.
 msgid "%1 seconds remaining"
@@ -9565,3 +9565,51 @@ msgstr "càmera IA _ de la línia negra detectada"
 #. Planet X AI Lens library block
 msgid "AI camera image contains black line offset _ ?"
 msgstr "càmera IA la imatge conté una línia negra amb desviació _?"
+
+#. Planet X AI Lens library block
+msgid "AI camera image contains number card _ ?"
+msgstr "càmera IA la imatge conté la targeta amb el número _ ?"
+
+#. Planet X AI Lens library block
+msgid "AI camera image contains object _ ?"
+msgstr "càmera IA la imatge conté l'objecte _ ?"
+
+#. Planet X AI Lens library block
+msgid "AI camera object _ confidence"
+msgstr "càmera IA grau de confiança en la detecció de l'objecte _"
+
+#. Planet X AI Lens library block
+msgid "AI camera image contains _ card?"
+msgstr "càmera IA la imatge conté la targeta _ ?"
+
+#. Planet X AI Lens library block
+msgid "AI camera switch function to _"
+msgstr "càmera IA canvia a la funció a _"
+
+#. Planet X AI Lens library block
+msgid "AI camera image contains traffic sign card _ ?"
+msgstr "càmera IA la imatge conté la targeta amb el senyal de trànsit _ ?"
+
+#. Library name
+msgid "Planet X AI Lens Pro"
+msgstr "Planet X AI Lens Pro"
+
+#. Library name
+msgid "Planet X Display"
+msgstr "Planet X Pantalla"
+
+#. Library name
+msgid "Planet X Execute"
+msgstr "Planet X Execute"
+
+#. Library name
+msgid "Planet X Input"
+msgstr "Planet X Entrada"
+
+#. Library name
+msgid "Planet X Wireless"
+msgstr "Planet X Sense Fils"
+
+#. Library name
+msgid "Planet X Support"
+msgstr "Planet X Suport"
