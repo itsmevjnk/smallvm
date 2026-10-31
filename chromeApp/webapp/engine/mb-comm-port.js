@@ -121,10 +121,18 @@ class MB_CommPort {
 		if (!this.serialPort) return; // user cancelled
 		const opened = await this.serialPort.open({ baudRate: 115200 })
 			.then(() => true)
-			.catch((e) => { window.alert(e); return false; });
+			.catch((e) => { this.reportOpenFailure(e); return false; });
 		if (!opened) { this.serialPort = null; return; }
 		this.serialReader = this.serialPort.readable.getReader();
 		this.serialReadLoop();
+	}
+
+	reportOpenFailure(e) {
+		// The browser reports a port held by another program or tab as a NetworkError.
+		const msg = (e.name === 'NetworkError') ?
+			localized('Close any other program or browser tab using the board, then try again.') : String(e);
+		MB_editor.inform(msg, localized('Could not open serial port'));
+		this.openFailed = true; // the user has been told why
 	}
 
 	async serialDisconnect() {
