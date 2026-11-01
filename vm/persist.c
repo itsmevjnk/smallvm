@@ -1080,7 +1080,7 @@ int * appendPersistentRecord(int recordType, int id, int extra, int byteCount, u
 	if ((deleteAll == recordType) && ((end - freeStart) < 100)) {
 		// this half-space is almost full so just clear memory
 		clearPersistentMemory();
-		return;
+		return freeStart;
 	}
 	if ((freeStart + needed) > end) {
 		compactCodeStore(NULL, NULL);
