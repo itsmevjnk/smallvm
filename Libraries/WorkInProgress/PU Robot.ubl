@@ -466,25 +466,16 @@ to '_pu_greet' {
   comment 'Greet is a mechanical action that belongs to one motion generation. A newer motion cancels it.'
   puSetEyes (booleanConstant true) (booleanConstant true)
   'play tone' 'nt;d' 1 200
-  if (generation != _pu_motion_generation) {
-    return
-  }
+  if (generation != _pu_motion_generation) {return}
   'play tone' 'nt;e' 1 200
-  if (generation != _pu_motion_generation) {
-    return
-  }
+  if (generation != _pu_motion_generation) {return}
   'play tone' 'nt;c' 1 200
-  if (generation != _pu_motion_generation) {
-    return
-  }
+  if (generation != _pu_motion_generation) {return}
   'play tone' 'nt;c' 0 200
-  if (generation != _pu_motion_generation) {
-    return
-  }
+  if (generation != _pu_motion_generation) {return}
   'play tone' 'nt;g' 0 200
-  if (generation != _pu_motion_generation) {
-    return
-  }
+  if (generation != _pu_motion_generation) {return}
+
   comment 'Use the calibration pose directly so greet does not create a new motion generation.'
   _pu_moveState 26 2 2 1 false 0
   if (generation != _pu_motion_generation) {return}
