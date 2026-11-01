@@ -2344,12 +2344,15 @@ class MB_Editor {
 		fireIDEEvent('scripts.redoAvailable', this.redoAvailable());
 	}
 
-	async restoreUndoState(source) {
-		// Undo and redo share this path. Each hands over the code string it wants
-		// shown and the project is rebuilt from it, rather than mutated in place.
+	async restoreUndoState(source, implementationLibs = []) {
+		// Undo, redo and a language change share this path. Each hands over the code
+		// string it wants shown and the project is rebuilt from it, not mutated in place.
+		// The text does not record which libraries are implementations, so a
+		// caller that knows passes their names.
 		this.saveNeeded = false;
 		this.project = new MB_Project();
 		if (source != null) this.project.loadFromString(source);
+		for (const libName of implementationLibs) this.project.libraryNamed(libName).beImplementation();
 		this.watchProjectVariables();
 		this.removeAllScripts();
 		for (const [x, y, script] of this.project.main.scripts) {
@@ -2396,7 +2399,9 @@ class MB_Editor {
 		}
 		this.endOpenEdit();
 		MB_BlockSearchBox.close(); // its index holds the old language's words
-		await this.restoreUndoState(this.project.codeString());
+		const implementationLibs = Array.from(this.project.libraries.values())
+			.filter((lib) => lib.isImplementationLib()).map((lib) => lib.moduleName);
+		await this.restoreUndoState(this.project.codeString(), implementationLibs);
 	}
 
 	readCustomTranslationFile() {
