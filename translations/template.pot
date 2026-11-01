@@ -9361,18 +9361,6 @@ msgid "pu;both eyes"
 msgstr ""
 
 #. PU Robot menu option
-msgid "X"
-msgstr ""
-
-#. PU Robot menu option
-msgid "Y"
-msgstr ""
-
-#. PU Robot menu option
-msgid "Z"
-msgstr ""
-
-#. PU Robot menu option
 msgid "pu;joystick button"
 msgstr ""
 
