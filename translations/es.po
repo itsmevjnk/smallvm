@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:23+0200\n"
-"PO-Revision-Date: 2026-11-01 18:39+0000\n"
+"PO-Revision-Date: 2026-11-01 21:39+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/microblocks/ide/"
 "es/>\n"
@@ -9116,3 +9116,7 @@ msgstr "magenta"
 #. Library folder
 msgid "folder;Nezha"
 msgstr "Nezha"
+
+#. Library folder
+msgid "folder;Planet X"
+msgstr "Planet X"
