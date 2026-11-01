@@ -1,6 +1,6 @@
 module 'PU Controller' Input
 author MicroBlocks
-version 1 1 
+version 1 2 
 depends _Radio 
 tags controller remote pu elecfreaks microbit 
 choices pu_button 'pu;joystick button' B1 B2 B3 B4 A B 'pu;touch' 
@@ -15,7 +15,7 @@ variables _pu_controller_button_states _pu_controller_task_started _pu_controlle
   space
   spec 'r' 'puControllerPressedButton' 'PU controller get pressed button : return index _' 'bool' false
   spec 'r' 'puControllerJoystick' 'PU controller joystick _ (-100 to 100)' 'menu.pu_joystick_axis' 'X'
-  spec 'r' 'puControllerButtonPressed' 'PU controller button _ pressed?' 'menu.pu_button' 'B1'
+  spec 'r' 'puControllerButtonPressed' 'PU controller _ pressed?' 'menu.pu_button' 'B1'
   spec 'r' 'puControllerAcceleration' 'PU controller acceleration _' 'menu.pu_accel_axis' 'X'
   space
   spec ' ' 'puControllerSendJoystick' 'PU controller send joystick _' 'menu.pu_joystick_axis' 'X'
