@@ -201,6 +201,7 @@
 					requestAnimationFrame(loop);
 					if (timestamp - lastStep >= 250) { // four times a second, as GP steps its scripter
 						lastStep = timestamp;
+						MB_editor.updateStopping();
 						MB_editor.step();
 					}
 					if (timestamp - lastTime < 1000 / FPS) {

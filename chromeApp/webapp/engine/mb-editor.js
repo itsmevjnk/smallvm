@@ -20,7 +20,7 @@ class MB_Editor {
 		this.lastProjectFolder = 'Examples'; // where the file picker opens
 		this.lastLibraryFolder = 'Libraries'; // and where it opens for a library
 		this.runningChunks = new Map(); // used for block highlighting
-		this.stoppingHighlights = new Map(); // block -> timer that unhighlights it
+		this.stoppingHighlights = new Map(); // block -> steps until its highlight goes
 		this.resultBubbles = new Map(); // block -> the bubble showing its value
 		this.blockForResultImage = null; // the script to save a picture of when its result arrives
 		this.chunkErrorListeners = []; // called with each decoded board error
@@ -1270,19 +1270,28 @@ class MB_Editor {
 			return; // unknown chunk
 		}
 
-		// A script that stops keeps its highlight for half a second, so one that
+		// A script that stops keeps its highlight for two steps, so one that
 		// runs again at once does not flicker.
-		clearTimeout(this.stoppingHighlights.get(runningBlock));
 		this.stoppingHighlights.delete(runningBlock);
 		if (isRunning) {
 			if (!runningBlock.getHighlight()) runningBlock.addHighlight();
 			this.runningChunks.set(runningBlock, chunkID);
 		} else {
 			this.runningChunks.delete(runningBlock);
-			this.stoppingHighlights.set(runningBlock, setTimeout(() => {
-				this.stoppingHighlights.delete(runningBlock);
-				runningBlock.removeHighlight();
-			}, 500));
+			this.stoppingHighlights.set(runningBlock, 2);
+		}
+	}
+
+	updateStopping() {
+		// Called four times a second, with step. A stopped script's highlight goes
+		// when its count of steps runs out.
+		for (const [block, count] of this.stoppingHighlights) {
+			if (count > 1) {
+				this.stoppingHighlights.set(block, count - 1);
+			} else {
+				this.stoppingHighlights.delete(block);
+				block.removeHighlight();
+			}
 		}
 	}
 
@@ -3529,10 +3538,7 @@ class MB_Editor {
 		// Called on disconnect. Everything the board put on the screen goes with
 		// it, bubbles included -- GP clears them together too (:2717).
 		this.removeResultBubbles();
-		for (const [block, timer] of this.stoppingHighlights) {
-			clearTimeout(timer);
-			block.removeHighlight();
-		}
+		for (const block of this.stoppingHighlights.keys()) block.removeHighlight();
 		this.stoppingHighlights = new Map();
 		for (const block of this.runningChunks.keys()) block.removeHighlight();
 		this.runningChunks = new Map();
