@@ -9560,3 +9560,54 @@ msgstr ""
 msgid "PU robot calibration pose"
 msgstr ""
 
+#. PU Controller library name
+msgid "PU Controller"
+msgstr ""
+
+#. PU Controller library block
+msgid "PU controller radio group _"
+msgstr ""
+
+#. PU Controller library block
+msgid "PU controller automatic send _"
+msgstr ""
+
+#. PU Controller library block
+msgid "PU controller get pressed button"
+msgstr ""
+
+#. PU Controller library block
+msgid "return index _"
+msgstr ""
+
+#. PU Controller library block
+msgid "PU controller joystick _ (-100 to 100)"
+msgstr ""
+
+#. PU Controller library block
+msgid "PU controller _ pressed?"
+msgstr ""
+
+#. PU Controller library block
+msgid "PU controller acceleration _"
+msgstr ""
+
+#. PU Controller library block
+msgid "PU controller send joystick _"
+msgstr ""
+
+#. PU Controller library block
+msgid "PU controller send acceleration _"
+msgstr ""
+
+#. PU Controller library block
+msgid "PU controller send button _"
+msgstr ""
+
+#. PU Controller library block
+msgid "PU controller send name _ value _"
+msgstr ""
+
+#. PU Controller library default value (puControllerSendValue)
+msgid "name"
+msgstr ""
