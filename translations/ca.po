@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 07:10+0200\n"
-"PO-Revision-Date: 2026-10-31 11:51+0000\n"
+"PO-Revision-Date: 2026-11-01 18:39+0000\n"
 "Last-Translator: Josep Ferràndiz <josep.ferrandiz@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/microblocks/ide/"
 "ca/>\n"
@@ -9056,11 +9056,11 @@ msgstr "magenta"
 
 #. Library folder
 msgid "folder;Nezha"
-msgstr "folder;Nezha"
+msgstr "Nezha"
 
 #. Library folder
 msgid "folder;Planet X"
-msgstr "folder;Planet X"
+msgstr "Planet X"
 
 #. Library name
 msgid "Nezha ESP32 Motor"
