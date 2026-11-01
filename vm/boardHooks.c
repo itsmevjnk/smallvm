@@ -95,8 +95,8 @@ int vmIDEConnected() {
 
 #if defined(NEZHA_ESP32)
 
-int suspendRequested = false;
-int isSuspended = false;
+volatile int suspendRequested = false;
+volatile int isSuspended = false;
 
 void vmRequestSuspend() {
 	// request suspension of VM execution and communications with IDE

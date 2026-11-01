@@ -68,8 +68,8 @@ int vmIDEConnected(); // true if the IDE sent a message in the last few seconds;
 void suspendIDEComm();
 void resumeIDEComm();
 
-extern int suspendRequested;
-extern int isSuspended;
+extern volatile int suspendRequested;
+extern volatile int isSuspended;
 
 void vmRequestSuspend(); // request suspension of VM execution and communications with IDE
 int vmIsSuspended(); // returns true when board is suspended
