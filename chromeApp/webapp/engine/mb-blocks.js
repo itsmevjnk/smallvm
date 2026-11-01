@@ -2481,6 +2481,7 @@ BlockMorph.prototype.codeString = function (indent = 0, result = [], early = tru
 			args[0].contents().text;
 		args = args.slice(); // copy args so we can modify it
 		args[0] = new TemplateSlotMorph(varName); // addCodeStringForArg quotes it
+		args[0].template().blockSpec = varName; // a template shows a blank name as 'v'; the text keeps it blank
 	}
 
 	if (early && this.isShortIf(args)) {
