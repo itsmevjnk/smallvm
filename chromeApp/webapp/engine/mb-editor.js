@@ -39,6 +39,9 @@ class MB_Editor {
 		this.paletteY = 0; // where the next block goes while the palette is being filled
 		this.undoStack = [];
 		this.redoStack = [];
+		// Libraries loaded only to serve another, by name. The project text does not
+		// record them, so they are marked again whenever the project is rebuilt from it.
+		this.implementationLibs = new Set();
 		this.watchProjectVariables();
 		this.blockSize = 125; // a fresh profile draws at GP's default block size
 		this.autosave = (typeof MB_Autosave === 'function') ? new MB_Autosave(this) : null;
@@ -1470,6 +1473,7 @@ class MB_Editor {
 		}
 		const lib = new MB_Module(libName);
 		this.project.addLibrary(lib);
+		this.implementationLibs.delete(libName);
 		this.updateLibraryList();
 		this.selectLibrary(libName);
 		return lib;
@@ -1609,6 +1613,9 @@ class MB_Editor {
 		}
 		if (asImplementation && (!replacing || replacing.isImplementationLib())) {
 			this.project.libraryNamed(moduleName).beImplementation();
+			this.implementationLibs.add(moduleName);
+		} else {
+			this.implementationLibs.delete(moduleName); // a library of its own now
 		}
 		// A library replacing one of its own name keeps the dependencies the
 		// project already resolved for it; a new one needs them brought in.
@@ -2363,15 +2370,13 @@ class MB_Editor {
 		fireIDEEvent('scripts.redoAvailable', this.redoAvailable());
 	}
 
-	async restoreUndoState(source, implementationLibs = []) {
+	async restoreUndoState(source) {
 		// Undo, redo and a language change share this path. Each hands over the code
 		// string it wants shown and the project is rebuilt from it, not mutated in place.
-		// The text does not record which libraries are implementations, so a
-		// caller that knows passes their names.
 		this.saveNeeded = false;
 		this.project = new MB_Project();
 		if (source != null) this.project.loadFromString(source);
-		for (const libName of implementationLibs) this.project.libraryNamed(libName).beImplementation();
+		this.markImplementationLibs();
 		this.watchProjectVariables();
 		this.removeAllScripts();
 		for (const [x, y, script] of this.project.main.scripts) {
@@ -2382,6 +2387,19 @@ class MB_Editor {
 		this.codeManager.project = this.project;
 		this.codeManager.recompileNeeded();
 		await this.codeManager.syncScripts();
+	}
+
+	markImplementationLibs() {
+		// Mark each listed library that another one in the project still depends on as
+		// an implementation. A name stays after its library is removed, so undoing the
+		// removal hides it again.
+		const served = new Set();
+		for (const lib of this.project.libraries.values()) {
+			for (const dep of lib.dependencyNames()) if (dep.startsWith('_')) served.add(dep.slice(1));
+		}
+		for (const libName of this.implementationLibs) {
+			if (served.has(libName)) this.project.libraryNamed(libName)?.beImplementation();
+		}
 	}
 
 	cancelScriptEdit() {
@@ -2418,9 +2436,7 @@ class MB_Editor {
 		}
 		this.endOpenEdit();
 		MB_BlockSearchBox.close(); // its index holds the old language's words
-		const implementationLibs = Array.from(this.project.libraries.values())
-			.filter((lib) => lib.isImplementationLib()).map((lib) => lib.moduleName);
-		await this.restoreUndoState(this.project.codeString(), implementationLibs);
+		await this.restoreUndoState(this.project.codeString());
 	}
 
 	readCustomTranslationFile() {
@@ -3029,6 +3045,7 @@ class MB_Editor {
 			if (!clearFirst) MB_editor.removeAllScripts();
 			MB_editor.saveNeeded = false; // don't save scripts while project is loading, as GP does
 			MB_editor.project = project;
+			MB_editor.implementationLibs.clear(); // an opened project's libraries are all its own
 			MB_editor.watchProjectVariables();
 			MB_editor.project.main.scripts.forEach( (entry) => {
 				let x = entry[0], y = entry[1], script = entry[2];
@@ -3374,10 +3391,12 @@ class MB_Editor {
 		// so the blocks are built once this project is the editor's.
 		this.project = new MB_Project();
 		this.project.loadFromString(project.codeString());
-		// The text does not record which libraries were loaded as implementations.
+		// The decompiled project marks the implementation libraries; its text does not.
+		this.implementationLibs.clear();
 		for (const lib of project.libraries.values()) {
-			if (lib.isImplementationLib()) this.project.libraryNamed(lib.moduleName).beImplementation();
+			if (lib.isImplementationLib()) this.implementationLibs.add(lib.moduleName);
 		}
+		this.markImplementationLibs();
 		this.watchProjectVariables();
 		this.removeAllScripts();
 		this.project.main.scripts.forEach(
