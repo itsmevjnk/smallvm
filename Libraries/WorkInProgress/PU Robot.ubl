@@ -4,9 +4,9 @@ version 1 3
 depends _Radio _NeoPixel '_Distance (HC-SR04)' '_Basic Sensors' _Microphone _Tone
 tags robot pu elecfreaks microbit
 choices pu_eyes 'pu;left eye' 'pu;right eye' 'pu;both eyes'
-choices pu_accel_axis X Y Z
+choices pu_accel_axis x y z
 choices pu_controller_button 'pu;joystick button' B1 B2 B3 B4 A B 'pu;touch'
-choices pu_controller_axis X Y
+choices pu_controller_axis x y
 choices pu_units cm inch
 choices pu_ambience_lights '1' '2' '3' '4' 'pu;all'
 choices pu_joint 'pu;left foot' 'pu;left leg' 'pu;right foot' 'pu;right leg' 'pu;head yaw' 'pu;head pitch'
@@ -33,8 +33,8 @@ variables _pu_initialized _pu_initializing _pu_trim _pu_current _pu_states _pu_s
   spec 'r' 'puBodyRoll' 'PU robot body roll (degrees)'
   spec 'r' 'puBodyPitch' 'PU robot body pitch (degrees)'
   space
-  spec 'r' 'puRemoteValue' 'PU robot controller joystick _ (-100 to 100)' 'menu.pu_controller_axis' 'X'
-  spec 'r' 'puRemoteAcceleration' 'PU robot controller acceleration _' 'menu.pu_accel_axis' 'X'
+  spec 'r' 'puRemoteValue' 'PU robot controller joystick _ (-100 to 100)' 'menu.pu_controller_axis' 'x'
+  spec 'r' 'puRemoteAcceleration' 'PU robot controller acceleration _' 'menu.pu_accel_axis' 'x'
   spec 'r' 'puRemoteButtonReceived' 'PU robot _ received?' 'menu.pu_controller_button' 'B1'
   advanced
   spec ' ' 'puMoveToPose' 'PU robot move to pose _ speed _ (1-10)' 'auto num'
@@ -52,7 +52,7 @@ variables _pu_initialized _pu_initializing _pu_trim _pu_current _pu_states _pu_s
   spec 'r' '_pu_remoteButtonCode' '_pu_remoteButtonCode _' 'menu.pu_controller_button' 'B1'
   spec ' ' '_pu_remoteProcessOne' '_pu_remoteProcessOne'
   spec ' ' '_pu_remoteLoop' '_pu_remoteLoop'
-  spec ' ' '_pu_updateIMU' '_pu_updateIMU'
+  spec ' ' '_pu_updateIMU' '_pu_updateIMU'x
   spec ' ' '_pu_calibrateIMU' '_pu_calibrateIMU'
   spec 'r' '_pu_balanceOffset' '_pu_balanceOffset'
   spec ' ' '_pu_computeControl' '_pu_computeControl balance _' 'bool' false
@@ -181,7 +181,7 @@ to '_pu_remoteProcessOne' {
   if ('[radio:messageReceived]') {
     local 'name' ('[radio:receivedString]')
     local 'value' ('[radio:receivedInteger]')
-    comment 'Generic PU Controller protocol. Joystick axes remain generic: X is horizontal and Y is vertical.'
+    comment 'Generic PU Controller protocol. Joystick axes remain generic: x is horizontal and Y is vertical.'
     if (name == '#ctrljoyY') {
       _pu_remote_joy_y = value
       _pu_remote_joy_y_silence = 0
@@ -202,7 +202,7 @@ to '_pu_remoteProcessOne' {
 }
 
 to '_pu_remoteLoop' {
-  comment 'Background receiver for the generic PU Controller protocol. Joystick watchdogs clear stale X/Y values after roughly 500 ms without a packet for that axis.'
+  comment 'Background receiver for the generic PU Controller protocol. Joystick watchdogs clear stale x/y values after roughly 500 ms without a packet for that axis.'
   forever {
     _pu_remote_task_heartbeat = (_pu_remote_task_heartbeat + 1)
     if (_pu_remote_task_heartbeat >= 1000000) {_pu_remote_task_heartbeat = 1}
@@ -862,7 +862,7 @@ to '_pu_calibrateIMU' {
   _pu_imu_head_yaw0 = (at 5 _pu_current)
   _pu_imu_head_pitch0 = (at 6 _pu_current)
 
-  comment 'Store angular zero offsets, not raw X/Y acceleration offsets.'
+  comment 'Store angular zero offsets, not raw x/y acceleration offsets.'
   _pu_imu_roll0_100 = ('_pu_bodyTilt100' 'roll' x0 y0 z0 0 0)
   _pu_imu_pitch0_100 = ('_pu_bodyTilt100' 'pitch' x0 y0 z0 0 0)
 
@@ -942,15 +942,15 @@ to puRemoteEnable group {
 }
 
 to puRemoteValue axis {
-  if (axis == 'X') {return _pu_remote_joy_x}
-  if (axis == 'Y') {return _pu_remote_joy_y}
+  if (axis == 'x') {return _pu_remote_joy_x}
+  if (axis == 'y') {return _pu_remote_joy_y}
   return 0
 }
 
 to puRemoteAcceleration axis {
-  if (axis == 'X') {return _pu_remote_accel_x}
-  if (axis == 'Y') {return _pu_remote_accel_y}
-  if (axis == 'Z') {return _pu_remote_accel_z}
+  if (axis == 'x') {return _pu_remote_accel_x}
+  if (axis == 'y') {return _pu_remote_accel_y}
+  if (axis == 'z') {return _pu_remote_accel_z}
   return 0
 }
 
