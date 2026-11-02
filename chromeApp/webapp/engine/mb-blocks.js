@@ -2844,16 +2844,18 @@ BlockMorph.prototype.alternateBlockColor = function () {
 	var clr = this.colorFor(this.category);
 
 	if (this.color.eq(clr)) {
-		this.setColor(
-			this.zebraContrast < 0 ? clr.darker(Math.abs(this.zebraContrast))
-				: clr.lighter(this.zebraContrast),
-			this.hasLabels() // silently
-		);
+		this.setColor(this.zebraColorFor(clr), this.hasLabels()); // silently
 	} else {
 		this.setColor(clr, this.hasLabels()); // silently
 	}
 	this.fixLabelColor();
 	this.fixChildrensBlockColor(true); // has issues if not forced
+};
+
+BlockMorph.prototype.zebraColorFor = function (clr) {
+	// the shade of clr for a reporter nested in a block of the same colour
+	return this.zebraContrast < 0 ? clr.darker(Math.abs(this.zebraContrast))
+		: clr.lighter(this.zebraContrast);
 };
 
 BlockMorph.prototype.fixLabelColor = function () {
@@ -4692,11 +4694,15 @@ ScriptsMorph.prototype.hideSelectedDefinitions = function () {
 
 BlockMorph.prototype.showSelected = function (flag) {
 	// Tint every block of this script green, or put its colours back.
+	// A zebra shaded block takes the zebra shade of its category's tint, and
+	// the input pills of a definition's prototype keep their colour.
+	const tint = (clr) => clr.mixed(0.5, new Color(0, 255, 0));
 	this.allChildren().forEach((b) => {
-		if (!(b instanceof BlockMorph)) return;
+		if (!(b instanceof BlockMorph) || b.parentThatIsA(BlockDefinitionMorph)) return;
 		if (flag && !b.unselectedColor) {
+			const base = b.colorFor(b.category);
 			b.unselectedColor = b.color;
-			b.setColor(b.color.mixed(0.5, new Color(0, 255, 0)));
+			b.setColor(b.color.eq(b.zebraColorFor(base)) ? b.zebraColorFor(tint(base)) : tint(b.color));
 		} else if (!flag && b.unselectedColor) {
 			b.setColor(b.unselectedColor);
 			b.unselectedColor = null;
