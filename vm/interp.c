@@ -413,6 +413,17 @@ static int findCallee(char *functionOrPrimitiveName) {
 #define POP_ARGS_COMMAND() { sp -= arg; }
 #define POP_ARGS_REPORTER() { sp -= arg - 1; }
 
+// Binary integer op with a fast path: when both args are ints (one AND tests both tags),
+// skip evalInt(). Anything else takes evalInt()'s path, so errors behave as before.
+#define INT_BINARY_OP(op) { \
+	tmpObj = *(sp - 2); \
+	if (bothInts(tmpObj, *(sp - 1))) { \
+		*(sp - arg) = int2obj(obj2int(tmpObj) op obj2int(*(sp - 1))); \
+	} else { \
+		*(sp - arg) = int2obj(evalInt(tmpObj) op evalInt(*(sp - 1))); \
+	} \
+}
+
 // Macro to check for stack overflow
 #define STACK_CHECK(n) { \
 	if (((sp + (n)) - task->stack) > STACK_LIMIT) { \
@@ -660,9 +671,13 @@ static void runTask(Task *task) {
 		vars[arg] = *--sp;
 		DISPATCH();
 	incrementGlobal_op:
-		tmp = evalInt(vars[arg]);
-		if (!errorCode) {
-			vars[arg] = int2obj(tmp + evalInt(*--sp));
+		if (bothInts(vars[arg], *(sp - 1))) { // special case for integers:
+			vars[arg] = int2obj(obj2int(vars[arg]) + obj2int(*--sp));
+		} else {
+			tmp = evalInt(vars[arg]);
+			if (!errorCode) {
+				vars[arg] = int2obj(tmp + evalInt(*--sp));
+			}
 		}
 		DISPATCH();
 	pushArgCount_op:
@@ -1012,24 +1027,36 @@ static void runTask(Task *task) {
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	add_op:
-		*(sp - arg) = int2obj(evalInt(*(sp - 2)) + evalInt(*(sp - 1)));
+		INT_BINARY_OP(+);
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	subtract_op:
-		*(sp - arg) = int2obj(evalInt(*(sp - 2)) - evalInt(*(sp - 1)));
+		INT_BINARY_OP(-);
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	multiply_op:
-		*(sp - arg) = int2obj(evalInt(*(sp - 2)) * evalInt(*(sp - 1)));
+		INT_BINARY_OP(*);
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	divide_op:
-		tmp = evalInt(*(sp - 1));
-		*(sp - arg) = ((0 == tmp) ? fail(zeroDivide) : int2obj(evalInt(*(sp - 2)) / tmp));
+		tmpObj = *(sp - 2);
+		if (bothInts(tmpObj, *(sp - 1)) && (zeroObj != *(sp - 1))) { // special case for integers:
+			*(sp - arg) = int2obj(obj2int(tmpObj) / obj2int(*(sp - 1)));
+		} else {
+			tmp = evalInt(*(sp - 1));
+			*(sp - arg) = ((0 == tmp) ? fail(zeroDivide) : int2obj(evalInt(tmpObj) / tmp));
+		}
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	modulo_op:
-		*(sp - arg) = primModulo(arg, sp - arg);
+		tmpObj = *(sp - arg + 1); // modulus
+		if (bothInts(*(sp - arg), tmpObj) && (obj2int(tmpObj) > 0)) { // special case for integers:
+			tmp = obj2int(*(sp - arg)) % obj2int(tmpObj);
+			if (tmp < 0) tmp += obj2int(tmpObj);
+			*(sp - arg) = int2obj(tmp);
+		} else {
+			*(sp - arg) = primModulo(arg, sp - arg);
+		}
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	absoluteValue_op:
@@ -1047,15 +1074,15 @@ static void runTask(Task *task) {
 
 	// bit operations:
 	bitAnd_op:
-		*(sp - arg) = int2obj(evalInt(*(sp - 2)) & evalInt(*(sp - 1)));
+		INT_BINARY_OP(&);
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	bitOr_op:
-		*(sp - arg) = int2obj(evalInt(*(sp - 2)) | evalInt(*(sp - 1)));
+		INT_BINARY_OP(|);
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	bitXor_op:
-		*(sp - arg) = int2obj(evalInt(*(sp - 2)) ^ evalInt(*(sp - 1)));
+		INT_BINARY_OP(^);
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	bitInvert_op:
@@ -1063,11 +1090,11 @@ static void runTask(Task *task) {
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	bitShiftLeft_op:
-		*(sp - arg) = int2obj(evalInt(*(sp - 2)) << evalInt(*(sp - 1)));
+		INT_BINARY_OP(<<);
 		POP_ARGS_REPORTER();
 		DISPATCH();
 	bitShiftRight_op:
-		*(sp - arg) = int2obj(evalInt(*(sp - 2)) >> evalInt(*(sp - 1)));
+		INT_BINARY_OP(>>);
 		POP_ARGS_REPORTER();
 		DISPATCH();
 
@@ -1347,10 +1374,10 @@ static void runTask(Task *task) {
 #if !defined(__EMSCRIPTEN__)
 
 #if defined(ESP32) || defined(ESP8266) || defined(GNUBLOCKS) || defined(ARDUINO_ARCH_SAMD) || \
-	defined(ARDUINO_ARCH_RP2040) || defined(PICO_RP2350)
+	defined(ARDUINO_ARCH_RP2040) || defined(PICO_RP2350) || \
+	((defined(ARDUINO_BBC_MICROBIT_V2) || defined(CALLIOPE_V3)) && !defined(BLE_IDE))
 
-	#if !defined(ESP32_ORIGINAL) && !defined(ESP32_S3_MATRIX_PORTAL) && !defined(NEZHA_ESP32)
-		// original ESP32 fails with TG1WDT_SYS_RESET when napping
+	#if !defined(ESP32_S3_MATRIX_PORTAL) && !defined(NEZHA_ESP32)
 		// S3_MATRIX_PORTAL pixel scanning (DMA) does not work with napping enabled
 		// NEZHA_ESP32 runs background tasks that need full speed CPU so cannot nap
 
@@ -1361,14 +1388,13 @@ static inline int napIfPossible() {
 	const int napMicroSecs = 4000;
 	if (displayIsActive()) return false;
 
-	int usecs = microsecs(); // get usecs
+	uint32 usecs = microsecs(); // get usecs
 	for (int i = 0; i < taskCount; i++) {
 		Task *task = &tasks[i];
 		if (running == task->status) return false;
 		if (waiting_micros == task->status) {
-			int usecsUntilWake = task->wakeTime - usecs;
-			if (usecsUntilWake < 0) usecsUntilWake = task->wakeTime; // clock wrap; use wakeTime as estimate
-			if (usecsUntilWake < napMicroSecs) return false;
+			if ((usecs - task->wakeTime) < RECENT) return false; // task is ready to run
+			if ((task->wakeTime - usecs) < napMicroSecs) return false; // task is ready to run soon
 		}
 	}
 	#if defined(GNUBLOCKS)
@@ -1400,6 +1426,24 @@ void vmLoop() {
 	while (true) {
 		if (count-- < 0) {
 			// do background VM tasks once every N VM loop cycles
+			#if defined(NEZHA_ESP32)
+				// Nezha VM suspend support; not needed on other boards
+				void delay(uint32_t); // declare the Arduino delay() function
+
+				if (suspendRequested) {
+					// this code executes when no primitives or Flash operations are in progress
+					suspendIDEComm();
+					stopAllAndSoftReset();
+					suspendRequested = false;
+					isSuspended = true;
+				}
+				if (isSuspended) {
+					// when suspended just loop without doing anything
+					// the delay() call allows Nezha tasks to get most of the CPU cycles
+					delay(5);
+					continue;
+				}
+			#endif
 			processMessage();
 			checkButtons();
 			#if defined(HAS_LED_MATRIX)
@@ -1433,6 +1477,7 @@ void vmLoop() {
 				count = 95;
 			#endif
 		} else if ((count & 0xF) == 0) {
+			// Capture incoming data every 15 scheduler epochs
 			captureIncomingBytes();
 		}
 		uint32 usecs = 0; // compute usecs only the first it is needed

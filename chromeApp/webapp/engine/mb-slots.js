@@ -474,8 +474,10 @@ InputSlotMorph.prototype.mouseClickLeft = function (pos) {
 };
 
 InputSlotMorph.prototype.userMenu = function () {
-	// A right-click on a slot opens nothing, and the hand looks no further up for a menu.
-	return chromeDrawnMenu;
+	// A right-click on a slot opens nothing, and the hand looks no further up for a menu,
+	// unless its block can insert a slot before it or delete it.
+	const items = (this.parent instanceof BlockMorph) ? this.parent.slotItemsFor(this) : [];
+	return items.length ? chromeMenuFor(this.world(), items) : chromeDrawnMenu;
 };
 
 InputSlotMorph.prototype.reactToEdit = function () {
@@ -1342,6 +1344,7 @@ ColorSlotMorph.prototype.setContents = function (clr) {
 	// the source gave (Block.gp initializeForNode keeps the parse node).
 	this.mbValue = (clr instanceof Color) ? undefined : clr;
 	this.mbUnsupplied = false;
+	this.isDefaultColour = false; // a colour put here is the user's
 	this.setColor(clr);
 };
 
