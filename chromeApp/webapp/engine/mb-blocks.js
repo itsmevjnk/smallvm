@@ -4038,7 +4038,7 @@ ReporterBlockMorph.prototype.mouseClickLeft = function (pos) {
 ReporterBlockMorph.prototype.userRenameVariable = function () {
 	// Rename the variable a block such as 'for' or 'local' declares. Its uses keep
 	// the old name, and the board gets the changed script at the next step.
-	MB_editor.prompt('Variable Name?', this.blockSpec, 'line').then((newName) => {
+	MB_editor.prompt('New variable name?', this.blockSpec, 'line').then((newName) => {
 		if (!newName) return; // an empty or cancelled answer changes nothing
 		this.userSetSpec(newName);
 		this.scriptChanged();
@@ -4051,7 +4051,7 @@ ReporterBlockMorph.prototype.userRenameInput = function () {
 	// A name is in use when another input has it or the body uses it; a global the body never uses is free.
 	const def = this.parentThatIsA(BlockDefinitionMorph),
 		oldName = this.blockSpec;
-	MB_editor.prompt('Variable Name?', oldName, 'line').then((answer) => {
+	MB_editor.prompt('New variable name?', oldName, 'line').then((answer) => {
 		const newName = (answer || '').trim();
 		if (!newName || (newName === oldName)) return;
 		const hat = def.parentThatIsA(HatBlockMorph),
