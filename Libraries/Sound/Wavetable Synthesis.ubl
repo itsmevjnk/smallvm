@@ -77,7 +77,8 @@ to '_wt_init' {
       atPut i _wt_waves ('[data:newByteArray]' 256)
       atPut i _wt_env_ad ('[data:newByteArray]' 256)
       atPut i _wt_env_r ('[data:newByteArray]' 256)
-      'wt_select instrument' 'tri wave' i
+      comment 'Set the wave directly: wt_select instrument calls _wt_init, which would start _wt_play before every table is built.'
+      '_wt_set_inst_tri_wave' i
     }
     'wt_config pin' -1
     _wt_note_factors = ('[data:makeList]' 119360 112768 106368 100352 94720 89408 84416 79680 75220 71040 67072 63232)
