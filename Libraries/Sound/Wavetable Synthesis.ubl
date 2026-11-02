@@ -1,6 +1,6 @@
 module 'Wavetable Synthesis' Output
 author MicroBlocks
-version 1 3 
+version 1 4 
 choices wt_ads none linear peak exponential piano 
 choices wt_releases none linear exponential 
 choices wt_instruments piano bass saxophone violin 'sin wave' 'tri wave' 'square wave' 'saw wave' 
@@ -113,7 +113,9 @@ to '_wt_play' {
     }
     d = (d * 1000)
     for i (size _wt_waves) {
-      sum += (((at (((((at i _wt_phases) + d) / (at i _wt_freqs)) & 255) + 1) (at i _wt_waves)) * (at i _wt_amps)) / 100)
+      if ((at i _wt_amps) != 0) {
+        sum += (((at (((((at i _wt_phases) + d) / (at i _wt_freqs)) & 255) + 1) (at i _wt_waves)) * (at i _wt_amps)) / 100)
+      }
     }
     analogWriteOp _wt_pin sum
   }
