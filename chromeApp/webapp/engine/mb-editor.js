@@ -1341,8 +1341,9 @@ class MB_Editor {
 	logUsage() {
 		// Ask microblocks.fun for the latest version number, once, so it can count this start.
 		// The answer is not read and a failure is not reported.
+		// J and K (Chromebook) tell these starts from the GP IDE's B and C.
 		// The random number only keeps a cache from answering.
-		const letter = /CrOS/.test(navigator.userAgent) ? 'C' : 'B';
+		const letter = /CrOS/.test(navigator.userAgent) ? 'K' : 'J';
 		const stamp = 100000 + Math.floor(Math.random() * 900000);
 		fetch('https://microblocks.fun/downloads/latest/VERSION.txt?' + letter + '=' + stamp,
 			{ mode: 'no-cors', cache: 'no-store' }).catch(() => {});
