@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-11-02 06:09+0000\n"
+"PO-Revision-Date: 2026-11-02 06:20+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -9824,11 +9824,11 @@ msgstr "rechtes Bein"
 
 #. PU Robot menu option
 msgid "pu;head yaw"
-msgstr "Kopfdrehen"
+msgstr "Kopfdrehung"
 
 #. PU Robot menu option
 msgid "pu;head pitch"
-msgstr "Kopfnicken"
+msgstr "Kopfneigung"
 
 #. PU Robot menu option
 msgid "pu;forward"
@@ -9896,7 +9896,7 @@ msgstr "PU Robot bewege _"
 
 #. PU Robot library block
 msgid "for _ steps speed _ (1-10)"
-msgstr "mit _ Schritten Tempo _ (1-10)"
+msgstr "Schritte _ Tempo _ (1-10)"
 
 #. PU Robot library block
 msgid "PU robot stop"
@@ -9932,11 +9932,11 @@ msgstr "PU Robot Entfernung in _"
 
 #. PU Robot library block
 msgid "PU robot body roll (degrees)"
-msgstr "PU Robot Körperrollen (Winkel in °)"
+msgstr "PU Robot Körperdrehung (Winkel in °)"
 
 #. PU Robot library block
 msgid "PU robot body pitch (degrees)"
-msgstr "PU Robot Körperneigen (Winkel in °)"
+msgstr "PU Robot Körperneigung (Winkel in °)"
 
 #. PU Robot library block
 msgid "PU robot controller joystick _ (-100 to 100)"
