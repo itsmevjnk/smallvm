@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2025-02-03 16:24+0200\n"
-"PO-Revision-Date: 2026-10-29 18:54+0000\n"
+"PO-Revision-Date: 2026-11-02 21:34+0000\n"
 "Last-Translator: Andriy Utkin <andriy@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/microblocks/"
 "ide/uk/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.11.dev0\n"
+"X-Generator: Weblate 2026.11.1.dev0\n"
 
 #. "Output" blocks category label
 msgid "cat;Output"
@@ -934,23 +934,23 @@ msgstr "зупинити кророві мотори"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "clockwise"
-msgstr ""
+msgstr "за годинниковою стрілкою"
 
 #. Citilab ED1 Stepper Motor library block
 msgid "counter-clockwise"
-msgstr ""
+msgstr "проти годинникової стрілки"
 
 #. Citilab ED1 Buttons library label
 msgid "ED1 Buttons"
-msgstr ""
+msgstr "Кнопки ED1"
 
 #. Citilab ED1 Buttons library block
 msgid "capacitive sensor _"
-msgstr ""
+msgstr "ємнісний датчик _"
 
 #. Citilab ED1 Buttons library block
 msgid "set capacitive threshold to _"
-msgstr ""
+msgstr "встановити ємнісний порог у _"
 
 #. BirdBrain Technologies Hummingbird kit library label
 msgid "Hummingbird LED _ _ %"
@@ -6557,3 +6557,20 @@ msgstr "пошук блоків та змінних..."
 #. Shown in the block search box when no block matches the search
 msgid "no matches"
 msgstr "збігів немає"
+
+#. PU Controller library default value (puControllerSendValue)
+msgid "name"
+msgstr "ім'я"
+
+#. Block in Comm category
+msgid "rx pin _ tx pin _"
+msgstr "пін прийому _ пін передачі _"
+
+#. Block in Comm category
+msgid "stop _"
+msgstr "зупинити _"
+
+#. Block in Comm category
+#, fuzzy
+msgid "bit order _"
+msgstr "бітовий порядок _"
