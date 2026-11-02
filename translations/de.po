@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-11-02 10:58+0000\n"
+"PO-Revision-Date: 2026-11-02 11:07+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -9932,11 +9932,11 @@ msgstr "PU Robot Entfernung in _"
 
 #. PU Robot library block
 msgid "PU robot body roll (degrees)"
-msgstr "PU Robot Körperdrehung (Winkel in °)"
+msgstr "PU Robot Körperdrehung"
 
 #. PU Robot library block
 msgid "PU robot body pitch (degrees)"
-msgstr "PU Robot Körperneigung (Winkel in °)"
+msgstr "PU Robot Körperneigung"
 
 #. PU Robot library block
 msgid "PU robot controller joystick _ (-100 to 100)"
