@@ -4398,7 +4398,12 @@ ScriptsMorph.prototype.contextMenu = function () {
 	if ((typeof Menus === 'undefined') || (world.currentKey === 16)) {
 		return ScriptsMorph.uber.contextMenu.call(this);
 	}
-	fireIDEEvent('context', Object.assign({ selector: 'scriptingArea' }, chromePoint(world)));
+	// Its paste items follow the browser's clipboard, which may have changed outside this
+	// page, so it shows once the read answers, unless another menu opened meanwhile.
+	const at = Object.assign({ selector: 'scriptingArea' }, chromePoint(world));
+	const shown = Menus.current();
+	const read = (navigator.clipboard && navigator.clipboard.readText) ? readGPClipboard() : Promise.resolve();
+	read.then(() => { if (Menus.current() === shown) fireIDEEvent('context', at); });
 	return chromeDrawnMenu;
 };
 
