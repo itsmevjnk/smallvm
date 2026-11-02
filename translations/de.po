@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-11-02 06:20+0000\n"
+"PO-Revision-Date: 2026-11-02 06:46+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -9768,7 +9768,7 @@ msgstr "beide"
 
 #. PU Robot menu option
 msgid "pu;joystick button"
-msgstr "Joystick-Button"
+msgstr "Joystick-Taste"
 
 #. PU Robot menu option
 msgid "B1"
@@ -9840,11 +9840,11 @@ msgstr "rückwärts"
 
 #. PU Robot menu option
 msgid "pu;side left"
-msgstr "Seite links"
+msgstr "seitwärts links"
 
 #. PU Robot menu option
 msgid "pu;side right"
-msgstr "Seite rechts"
+msgstr "seitwärts rechts"
 
 #. PU Robot menu option
 msgid "pu;turn left"
