@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-11-02 06:46+0000\n"
+"PO-Revision-Date: 2026-11-02 10:58+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -9957,7 +9957,7 @@ msgstr "PU Robot bewege zur Haltung _ Tempo _ (1-10)"
 #. PU Robot library block
 msgid "PU robot trim left foot _ left leg _ right foot _ right leg _ head yaw _ head pitch _"
 msgstr ""
-"PU Robot setze linker Fuß _ linkes Bein _ rechter Fuß _ rechtes Bein _ "
+"PU Robot setze linken Fuß _ linkes Bein _ rechten Fuß _ rechtes Bein _ "
 "Kopfdrehung _ Kopfneigung _"
 
 #. PU Robot library block
