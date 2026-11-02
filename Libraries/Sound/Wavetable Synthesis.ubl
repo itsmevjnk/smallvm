@@ -6,7 +6,7 @@ choices wt_releases none linear exponential
 choices wt_instruments piano bass saxophone violin 'sin wave' 'tri wave' 'square wave' 'saw wave' 
 description 'Sound synthesis directly on the microcontroller using wave tables. Supports 10 different channels for which you can select different instruments in the same style of the MIDI library.
 '
-variables _wt_waves _wt_freqs _wt_amps _wt_note_factors _wt_pin _wt_env_ad _wt_env_r 
+variables _wt_waves _wt_freqs _wt_amps _wt_note_factors _wt_pin _wt_env_ad _wt_env_r _wt_phases _wt_t0 
 
   spec ' ' 'wt_config pin' 'set output pin to _' 'num' 10
   space
@@ -22,6 +22,8 @@ variables _wt_waves _wt_freqs _wt_amps _wt_note_factors _wt_pin _wt_env_ad _wt_e
   spec ' ' '_wt_init' '_wt_init'
   spec ' ' '_wt_play' '_wt_play'
   spec 'r' '_wt_MIDI to factor' '_wt_MIDI to factor _' 'auto' '10'
+  spec ' ' '_wt_sync phase' '_wt_sync phase _' 'auto' 1
+  spec ' ' '_wt_set amp' '_wt_set amp _ _' 'auto auto' 1 0
   space
   spec ' ' '_wt_set_inst_tri_wave' '_wt_set_inst_tri_wave _' 'auto' 1
   spec ' ' '_wt_set_inst_saw_wave' '_wt_set_inst_saw_wave _' 'auto' 1
@@ -80,6 +82,9 @@ to '_wt_init' {
     'wt_config pin' -1
     _wt_note_factors = ('[data:makeList]' 119360 112768 106368 100352 94720 89408 84416 79680 75220 71040 67072 63232)
   }
+  if (_wt_phases == 0) {
+    _wt_phases = (newList 10 0)
+  }
   sendBroadcast '_wt_play'
 }
 
@@ -94,8 +99,20 @@ to '_wt_piano2' {
 to '_wt_play' {
   forever {
     local 'sum' 0
+    local 'd' ((microsOp) - _wt_t0)
+    if (or (d < 0) (d > 500000)) {
+      comment 'Move the time origin forward so (d * 1000) below never overflows. A silent channel syncs when it starts to sound.'
+      _wt_t0 = (_wt_t0 + d)
+      for i (size _wt_waves) {
+        if ((at i _wt_amps) != 0) {
+          '_wt_sync phase' i
+        }
+      }
+      d = 0
+    }
+    d = (d * 1000)
     for i (size _wt_waves) {
-      sum += (((at (((((microsOp) * 1000) / (at i _wt_freqs)) % 256) + 1) (at i _wt_waves)) * (at i _wt_amps)) / 100)
+      sum += (((at (((((at i _wt_phases) + d) / (at i _wt_freqs)) & 255) + 1) (at i _wt_waves)) * (at i _wt_amps)) / 100)
     }
     analogWriteOp _wt_pin sum
   }
@@ -107,6 +124,14 @@ to '_wt_sax1' {
 
 to '_wt_sax2' {
   return ('[data:split]' '163,155,146,136,127,118,111,106,101,96,93,91,93,98,105,111,115,119,123,127,131,134,133,127,117,107,97,91,86,81,77,72,67,63,59,55,50,44,39,35,32,30,30,30,32,34,34,34,31,27,23,20,18,16,15,13,11,11,11,12,13,14,14,14,15,18,22,25,27,26,25,24,23,21,19,16,13,11,8,6,4,2,0,0,0,0,2,6,11,15,19,22,27,33,38,44,49,52,55,58,61,65,69,72,73,74,75,76,77,78,79,81,84,86,88,89,90,92,93,95,96,98,99,98,98,99,101,102,102,103,105,108,113,117,121,125' ',' true)
+}
+
+to '_wt_set amp' c value {
+  comment 'A channel leaving 0 needs its phase at the current time origin.'
+  if (and ((at c _wt_amps) == 0) (value != 0)) {
+    '_wt_sync phase' c
+  }
+  atPut c _wt_amps value
 }
 
 to '_wt_set envelope ad_exponential' c {
@@ -240,6 +265,12 @@ to '_wt_set_inst_violin' c {
   '_wt_set_inst' 'violin' c
 }
 
+to '_wt_sync phase' c {
+  comment 'Table position of channel c at time _wt_t0, as (_wt_t0 * 1000) mod (256 * freq) without overflow. 32 * freq usecs is exactly 125 table lengths.'
+  local 'p' (32 * (at c _wt_freqs))
+  atPut c _wt_phases (8 * ((125 * (_wt_t0 % p)) % p))
+}
+
 to '_wt_violin1' {
   return ('[data:split]' '128,130,130,129,129,130,137,150,166,182,200,219,235,248,255,255,248,236,222,206,190,176,165,156,154,156,164,175,188,199,210,220,225,226,226,226,227,228,230,230,228,224,215,204,191,177,161,145,130,114,97,80,66,58,53,51,50,51,53,54,55,57,58,58,57,54,50,45,39,33,28,24,22,22,25,30,38,48,60,73,84,96,106,115,121,123,124,123,121,119,116,112,108,103,98,93,89,86,85,89,95,106,117,129,142,154,165,173,179,183,185,185,185,183,181,178,176,171,167,162,158,154,152,151,151' ',' true)
 }
@@ -314,13 +345,14 @@ to 'wt_play MIDI note' note ms c vol {
   local 'sustain' ((vol * (at 256 env_ad)) / 256)
   local 'ad time' (ifExpression (sustain > 0) 250 ((ms * 1000) / 256))
   atPut c _wt_freqs ('_wt_MIDI to factor' note)
+  '_wt_sync phase' c
   for i 256 {
-    atPut c _wt_amps (((at i env_ad) * vol) / 256)
+    '_wt_set amp' c (((at i env_ad) * vol) / 256)
     waitMicros (v 'ad time')
   }
   waitMillis (ms - (((millisOp) - start) * 2))
   for i 256 {
-    atPut c _wt_amps (((at i env_r) * sustain) / 256)
+    '_wt_set amp' c (((at i env_r) * sustain) / 256)
     waitMicros 250
   }
 }
@@ -341,7 +373,7 @@ to 'wt_select instrument' instrument c {
 to 'wt_stop all notes on channel' c ms {
   local 'amp' (at c _wt_amps)
   for i 100 {
-    atPut c _wt_amps ((((at c _wt_amps) * 100) - amp) / 100)
+    '_wt_set amp' c ((((at c _wt_amps) * 100) - amp) / 100)
     waitMillis (ms / 100)
   }
   atPut c _wt_amps 0
