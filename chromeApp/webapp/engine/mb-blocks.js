@@ -2844,16 +2844,18 @@ BlockMorph.prototype.alternateBlockColor = function () {
 	var clr = this.colorFor(this.category);
 
 	if (this.color.eq(clr)) {
-		this.setColor(
-			this.zebraContrast < 0 ? clr.darker(Math.abs(this.zebraContrast))
-				: clr.lighter(this.zebraContrast),
-			this.hasLabels() // silently
-		);
+		this.setColor(this.zebraColorFor(clr), this.hasLabels()); // silently
 	} else {
 		this.setColor(clr, this.hasLabels()); // silently
 	}
 	this.fixLabelColor();
 	this.fixChildrensBlockColor(true); // has issues if not forced
+};
+
+BlockMorph.prototype.zebraColorFor = function (clr) {
+	// the shade of clr for a reporter nested in a block of the same colour
+	return this.zebraContrast < 0 ? clr.darker(Math.abs(this.zebraContrast))
+		: clr.lighter(this.zebraContrast);
 };
 
 BlockMorph.prototype.fixLabelColor = function () {
@@ -4398,7 +4400,12 @@ ScriptsMorph.prototype.contextMenu = function () {
 	if ((typeof Menus === 'undefined') || (world.currentKey === 16)) {
 		return ScriptsMorph.uber.contextMenu.call(this);
 	}
-	fireIDEEvent('context', Object.assign({ selector: 'scriptingArea' }, chromePoint(world)));
+	// Its paste items follow the browser's clipboard, which may have changed outside this
+	// page, so it shows once the read answers, unless another menu opened meanwhile.
+	const at = Object.assign({ selector: 'scriptingArea' }, chromePoint(world));
+	const shown = Menus.current();
+	const read = (navigator.clipboard && navigator.clipboard.readText) ? readGPClipboard() : Promise.resolve();
+	read.then(() => { if (Menus.current() === shown) fireIDEEvent('context', at); });
 	return chromeDrawnMenu;
 };
 
@@ -4687,11 +4694,15 @@ ScriptsMorph.prototype.hideSelectedDefinitions = function () {
 
 BlockMorph.prototype.showSelected = function (flag) {
 	// Tint every block of this script green, or put its colours back.
+	// A zebra shaded block takes the zebra shade of its category's tint, and
+	// the input pills of a definition's prototype keep their colour.
+	const tint = (clr) => clr.mixed(0.5, new Color(0, 255, 0));
 	this.allChildren().forEach((b) => {
-		if (!(b instanceof BlockMorph)) return;
+		if (!(b instanceof BlockMorph) || b.parentThatIsA(BlockDefinitionMorph)) return;
 		if (flag && !b.unselectedColor) {
+			const base = b.colorFor(b.category);
 			b.unselectedColor = b.color;
-			b.setColor(b.color.mixed(0.5, new Color(0, 255, 0)));
+			b.setColor(b.color.eq(b.zebraColorFor(base)) ? b.zebraColorFor(tint(base)) : tint(b.color));
 		} else if (!flag && b.unselectedColor) {
 			b.setColor(b.unselectedColor);
 			b.unselectedColor = null;
@@ -5624,7 +5635,9 @@ BlockSectionDefinitionMorph.prototype.hideDetails = function () {
 
 BlockSectionDefinitionMorph.prototype.fixLayout = function () {
 	// One row, centred vertically; a hidden part takes no room.
-	const gap = 5 / ZOOM; // 5 screen pixels at every block size
+	// 5 screen pixels at every block size. A picture's copy (whose parts resizeBlock
+	// gives a pixelsPerUnit) is laid out in image pixels, 10 apart at every export scale.
+	const gap = this.pixelsPerUnit ? 10 : 5 / ZOOM;
 	this.drawer.fixLayout();
 	const parts = this.elements().concat(this.drawer.isVisible ? [this.drawer] : []);
 	const height = Math.max(0, ...parts.map((m) => m.height()));

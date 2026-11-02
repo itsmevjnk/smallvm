@@ -1728,7 +1728,6 @@ MicroBitDisplaySlotMorph.prototype.init = function (bits) {
 	this.strideY = 14;
 	this.ledWidth = 9;
 	this.ledHeight = 12;
-	this.setColor(new Color(71, 82, 191));
 	if (bits) this.setContents(bits);
 	this.fixLayout();
 };
@@ -1794,15 +1793,7 @@ MicroBitDisplaySlotMorph.prototype.fixLayout = function () {
 };
 
 MicroBitDisplaySlotMorph.prototype.render = function (ctx) {
-	var borderColor;
-
-	ctx.fillStyle = this.color.toString();
-	ctx.fillRect(
-		this.edge,
-		this.edge,
-		this.width(),
-		this.height()
-	);
+	// Only the LEDs: the block's own colour shows between them, selected or not.
 	let offColor = new Color(37, 43, 101);
 	let onColor = new Color(229, 0, 0);
 	for (let row = 0; row < 5; row++) {

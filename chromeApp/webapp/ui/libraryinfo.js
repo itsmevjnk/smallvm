@@ -108,10 +108,15 @@ class LibraryInfoWindow extends FloatingWindow {
 	}
 
 	descriptionInput() {
-		let textarea = document.createElement('textarea');
+		let textarea;
+		if (this.forEditing) {
+			textarea = document.createElement('textarea');
+			textarea.textContent = this.library.description;
+		} else {
+			textarea = document.createElement('span');
+			textarea.innerHTML = marked.parse(this.library.description);
+		}
 		textarea.setAttribute('data-undraggable', true);
-		textarea.textContent = this.library.description;
-		textarea.readOnly = !this.forEditing;
 		return textarea;
 	}
 
