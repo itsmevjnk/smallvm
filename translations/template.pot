@@ -7101,6 +7101,18 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#. In MicroBlocks IDE project save
+msgid "Untitled"
+msgstr ""
+
+#. In MicroBlocks IDE project open
+msgid "Open from URL"
+msgstr ""
+
+#. In MicroBlocks IDE project open
+msgid "URL?"
+msgstr ""
+
 #. In MicroBlocks IDE connection menu
 msgid "Connect"
 msgstr ""
@@ -7203,6 +7215,18 @@ msgstr ""
 msgid "The board is not responding."
 msgstr ""
 
+#. MicroBlocks IDE error message.
+msgid "Installing firmware on this board needs WebUSB, which only Chrome and Edge support. You can still program the board from this browser once it has MicroBlocks firmware."
+msgstr ""
+
+#. MicroBlocks IDE error message.
+msgid "Could not open serial port"
+msgstr ""
+
+#. MicroBlocks IDE error message.
+msgid "Close any other program or browser tab using the board, then try again."
+msgstr ""
+
 #. MicroBlocks IDE information
 msgid "Try to Install MicroBlocks on the board?"
 msgstr ""
@@ -7237,6 +7261,10 @@ msgstr ""
 
 #. Confirmation window
 msgid "Discard current project?"
+msgstr ""
+
+#. Confirmation window
+msgid "Restore unsaved work?"
 msgstr ""
 
 #. Scripting area right-click context menu
@@ -7284,6 +7312,10 @@ msgid "paste script from clipboard"
 msgstr ""
 
 #. Scripting area right-click context menu
+msgid "paste all scripts from clipboard"
+msgstr ""
+
+#. Scripting area right-click context menu
 msgid "save a picture of all visible scripts"
 msgstr ""
 
@@ -7308,6 +7340,10 @@ msgid "printable (200%)"
 msgstr ""
 
 #. Block selection right-click context menu
+msgid "copy selection"
+msgstr ""
+
+#. Block selection right-click context menu
 msgid "duplicate selection"
 msgstr ""
 
@@ -7317,6 +7353,18 @@ msgstr ""
 
 #. Block selection right-click context menu
 msgid "delete selection"
+msgstr ""
+
+#. Block selection right-click context menu
+msgid "run selected"
+msgstr ""
+
+#. Block selection right-click context menu
+msgid "stop selected"
+msgstr ""
+
+#. Block selection right-click context menu
+msgid "toggle selected"
 msgstr ""
 
 #. Settings menu option

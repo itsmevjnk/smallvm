@@ -7101,6 +7101,18 @@ msgstr "Do you want me to update the one in the project?"
 msgid "Save"
 msgstr "Save"
 
+#. In MicroBlocks IDE project save
+msgid "Untitled"
+msgstr "Untitled"
+
+#. In MicroBlocks IDE project open
+msgid "Open from URL"
+msgstr "Open from URL"
+
+#. In MicroBlocks IDE project open
+msgid "URL?"
+msgstr "URL?"
+
 #. In MicroBlocks IDE connection menu
 msgid "Connect"
 msgstr "Connect"
@@ -7203,6 +7215,18 @@ msgstr "scripts or functions."
 msgid "The board is not responding."
 msgstr "The board is not responding."
 
+#. MicroBlocks IDE error message.
+msgid "Installing firmware on this board needs WebUSB, which only Chrome and Edge support. You can still program the board from this browser once it has MicroBlocks firmware."
+msgstr "Installing firmware on this board needs WebUSB, which only Chrome and Edge support. You can still program the board from this browser once it has MicroBlocks firmware."
+
+#. MicroBlocks IDE error message.
+msgid "Could not open serial port"
+msgstr "Could not open serial port"
+
+#. MicroBlocks IDE error message.
+msgid "Close any other program or browser tab using the board, then try again."
+msgstr "Close any other program or browser tab using the board, then try again."
+
 #. MicroBlocks IDE information
 msgid "Try to Install MicroBlocks on the board?"
 msgstr "Try to Install MicroBlocks on the board?"
@@ -7238,6 +7262,10 @@ msgstr "Quit MicroBlocks?"
 #. Confirmation window
 msgid "Discard current project?"
 msgstr "Discard current project?"
+
+#. Confirmation window
+msgid "Restore unsaved work?"
+msgstr "Restore unsaved work?"
 
 #. Scripting area right-click context menu
 msgid "set block size..."
@@ -7284,6 +7312,10 @@ msgid "paste script from clipboard"
 msgstr "paste script from clipboard"
 
 #. Scripting area right-click context menu
+msgid "paste all scripts from clipboard"
+msgstr "paste all scripts from clipboard"
+
+#. Scripting area right-click context menu
 msgid "save a picture of all visible scripts"
 msgstr "save a picture of all visible scripts"
 
@@ -7308,6 +7340,10 @@ msgid "printable (200%)"
 msgstr "printable (200%)"
 
 #. Block selection right-click context menu
+msgid "copy selection"
+msgstr "copy selection"
+
+#. Block selection right-click context menu
 msgid "duplicate selection"
 msgstr "duplicate selection"
 
@@ -7318,6 +7354,18 @@ msgstr "drag selection"
 #. Block selection right-click context menu
 msgid "delete selection"
 msgstr "delete selection"
+
+#. Block selection right-click context menu
+msgid "run selected"
+msgstr "run selected"
+
+#. Block selection right-click context menu
+msgid "stop selected"
+msgstr "run selected"
+
+#. Block selection right-click context menu
+msgid "toggle selected"
+msgstr "run selected"
 
 #. Settings menu option
 msgid "about..."
@@ -9344,7 +9392,6 @@ msgstr "Planet X Wireless"
 msgid "Planet X Support"
 msgstr "Planet X Support"
 
-
 #. PU Robot library name
 msgid "PU Robot"
 msgstr "PU Robot"
@@ -9612,4 +9659,3 @@ msgstr "PU controller send name _ value _"
 #. PU Controller library default value (puControllerSendValue)
 msgid "name"
 msgstr "name"
-
