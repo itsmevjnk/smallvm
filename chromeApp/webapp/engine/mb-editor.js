@@ -2485,7 +2485,8 @@ class MB_Editor {
 				}
 			}
 			for (const part of parts.reverse()) {
-				if (part instanceof SyntaxElementMorph) part.fixLayout();
+				// a prototype's row is laid out only from below, after its inputs have grown
+				if ((part instanceof SyntaxElementMorph) || (part instanceof BlockSectionDefinitionMorph)) part.fixLayout();
 			}
 		} finally {
 			SyntaxElementMorph.prototype.fixesParentLayout = true;
