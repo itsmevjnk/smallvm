@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
-"PO-Revision-Date: 2026-11-03 04:18+0000\n"
+"PO-Revision-Date: 2026-11-03 09:21+0000\n"
 "Last-Translator: Ralf Krause <ralf.krause@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
@@ -6755,7 +6755,7 @@ msgstr "#SVG#wave-noise Gate _"
 msgid "Reconnect to the board by clicking the \"Connect\" button."
 msgstr ""
 "Verbinde MicroBlocks neu mit dem Board. Klicke dafür auf die Taste "
-"\"verbinden\"."
+"\"Verbinden\"."
 
 #. Analog Synthesis library block
 msgid "set frequency ramp from _ % to _ % for gate _"
@@ -9962,7 +9962,7 @@ msgstr ""
 
 #. PU Robot library block
 msgid "PU robot calibration pose"
-msgstr "PU Robot Ausgangshaltung"
+msgstr "PU Robot Grundhaltung"
 
 #. PU Controller library name
 msgid "PU Controller"
@@ -10102,8 +10102,8 @@ msgstr "Wenn die NeoPixels sich ausschalten"
 #. MicroBlocks IDE information
 msgid "reconnect to the board by clicking the \"Connect\" button."
 msgstr ""
-"stelle die Verbindung zum Board wieder her, indem du auf die Taste "
-"\"Verbinden“ klickst."
+"Verbinde MicroBlocks neu mit dem Board. Klicke dafür auf die Taste "
+"\"Verbinden\"."
 
 #. MicroBlocks IDE error message.
 msgid "Program is too large to store on board."
@@ -10174,7 +10174,7 @@ msgstr "Bibliotheksname?"
 
 #. Load library from URL window title
 msgid "Library URL?"
-msgstr "URL der Biblothek?"
+msgstr "Biblotheks-URL?"
 
 #. Block variable rename window title
 msgid "Variable Name?"
