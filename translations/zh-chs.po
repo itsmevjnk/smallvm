@@ -3,9 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-11-03 15:06+0000\n"
-"Last-Translator: Shuai Liang <robot-dreamer@users.noreply.hosted.weblate.org>"
-"\n"
+"PO-Revision-Date: 2026-11-03 16:45+0000\n"
+"Last-Translator: John Maloney <jhmaloney@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
 "Language: zh-chs\n"
@@ -6612,10 +6611,12 @@ msgid "run selected"
 msgstr "运行选择的积木"
 
 #. Block selection right-click context menu
+#, fuzzy
 msgid "stop selected"
 msgstr "停止选择的积木"
 
 #. Block selection right-click context menu
+#, fuzzy
 msgid "toggle selected"
 msgstr "运行选择的积木"
 
