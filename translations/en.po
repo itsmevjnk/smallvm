@@ -7361,11 +7361,11 @@ msgstr "run selected"
 
 #. Block selection right-click context menu
 msgid "stop selected"
-msgstr "run selected"
+msgstr "stop selected"
 
 #. Block selection right-click context menu
 msgid "toggle selected"
-msgstr "run selected"
+msgstr "toggle selected"
 
 #. Settings menu option
 msgid "about..."
@@ -7508,8 +7508,20 @@ msgid "Firmware Installed"
 msgstr "Firmware Installed"
 
 #. MicroBlocks IDE information
+msgid "Installing firmware on this board is not supported yet in this version of MicroBlocks"
+msgstr "Installing firmware on this board is not supported yet in this version of MicroBlocks"
+
+#. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button."
 msgstr "Reconnect to the board by clicking the \"Connect\" button."
+
+#. MicroBlocks IDE information. Firmware install
+msgid "When the NeoPixels turn off"
+msgstr "When the NeoPixels turn off"
+
+#. MicroBlocks IDE information
+msgid "reconnect to the board by clicking the \"Connect\" button."
+msgstr "reconnect to the board by clicking the \"Connect\" button."
 
 #. MicroBlocks IDE information
 msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
@@ -7948,22 +7960,6 @@ msgstr "Load Project"
 msgid "MicroBlocks hit an error, so the last thing it was doing may not have finished. Your project is still open: check that it looks right before you save it."
 msgstr "MicroBlocks hit an error, so the last thing it was doing may not have finished. Your project is still open: check that it looks right before you save it."
 
-#. MicroBlocks IDE information
-msgid "Installing firmware on this board is not supported yet in this version of MicroBlocks"
-msgstr "Installing firmware on this board is not supported yet in this version of MicroBlocks"
-
-#. MicroBlocks IDE information. Firmware install
-msgid "When the NeoPixels turn off"
-msgstr "When the NeoPixels turn off"
-
-#. MicroBlocks IDE information
-msgid "reconnect to the board by clicking the \"Connect\" button."
-msgstr "reconnect to the board by clicking the \"Connect\" button."
-
-#. MicroBlocks IDE information
-msgid "Reconnect to the board by clicking the \"Connect\" button."
-msgstr "Reconnect to the board by clicking the \"Connect\" button."
-
 #. MicroBlocks IDE error message.
 msgid "Program is too large to store on board."
 msgstr "Program is too large to store on board."
@@ -8007,10 +8003,6 @@ msgstr "Could not find firmware files at"
 #. MicroBlocks IDE information. Firmware install
 msgid "The firmware file will be saved to your downloads folder."
 msgstr "The firmware file will be saved to your downloads folder."
-
-#. MicroBlocks IDE information. Add dependency name or URL dialog
-msgid "If you are adding a library that\'s built into MicroBlocks, you can just enter its name."
-msgstr "If you are adding a library that\'s built into MicroBlocks, you can just enter its name."
 
 #. MicroBlocks IDE information. End erasing flash
 msgid "Done"
@@ -9566,10 +9558,6 @@ msgstr "B4"
 #. PU Robot menu option
 msgid "A"
 msgstr "A"
-
-#. PU Robot menu option
-msgid "B"
-msgstr "B"
 
 #. PU Robot menu option
 msgid "pu;touch"

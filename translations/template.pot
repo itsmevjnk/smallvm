@@ -7508,7 +7508,19 @@ msgid "Firmware Installed"
 msgstr ""
 
 #. MicroBlocks IDE information
+msgid "Installing firmware on this board is not supported yet in this version of MicroBlocks"
+msgstr ""
+
+#. MicroBlocks IDE information
 msgid "Reconnect to the board by clicking the \"Connect\" button."
+msgstr ""
+
+#. MicroBlocks IDE information. Firmware install
+msgid "When the NeoPixels turn off"
+msgstr ""
+
+#. MicroBlocks IDE information
+msgid "reconnect to the board by clicking the \"Connect\" button."
 msgstr ""
 
 #. MicroBlocks IDE information
@@ -7948,22 +7960,6 @@ msgstr ""
 msgid "MicroBlocks hit an error, so the last thing it was doing may not have finished. Your project is still open: check that it looks right before you save it."
 msgstr ""
 
-#. MicroBlocks IDE information
-msgid "Installing firmware on this board is not supported yet in this version of MicroBlocks"
-msgstr ""
-
-#. MicroBlocks IDE information. Firmware install
-msgid "When the NeoPixels turn off"
-msgstr ""
-
-#. MicroBlocks IDE information
-msgid "reconnect to the board by clicking the "Connect" button."
-msgstr ""
-
-#. MicroBlocks IDE information
-msgid "Reconnect to the board by clicking the "Connect" button."
-msgstr ""
-
 #. MicroBlocks IDE error message.
 msgid "Program is too large to store on board."
 msgstr ""
@@ -8006,10 +8002,6 @@ msgstr ""
 
 #. MicroBlocks IDE information. Firmware install
 msgid "The firmware file will be saved to your downloads folder."
-msgstr ""
-
-#. MicroBlocks IDE information. Add dependency name or URL dialog
-msgid "If you are adding a library that\'s built into MicroBlocks, you can just enter its name."
 msgstr ""
 
 #. MicroBlocks IDE information. End erasing flash
@@ -9565,10 +9557,6 @@ msgstr ""
 
 #. PU Robot menu option
 msgid "A"
-msgstr ""
-
-#. PU Robot menu option
-msgid "B"
 msgstr ""
 
 #. PU Robot menu option
