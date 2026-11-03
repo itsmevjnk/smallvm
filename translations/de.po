@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 16:43+0200\n"
 "PO-Revision-Date: 2026-11-03 16:45+0000\n"
-"Last-Translator: John Maloney <jhmaloney@users.noreply.hosted.weblate.org>\n"
+"Last-Translator: Ralf Krause <ralf.krause@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/microblocks/ide/"
 "de/>\n"
 "Language: de\n"
@@ -10063,12 +10063,10 @@ msgid "run selected"
 msgstr "führe Auswahl aus"
 
 #. Block selection right-click context menu
-#, fuzzy
 msgid "stop selected"
 msgstr "stoppe Auswahl"
 
 #. Block selection right-click context menu
-#, fuzzy
 msgid "toggle selected"
 msgstr "schalte Auswahl um"
 
