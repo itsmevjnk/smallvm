@@ -3,8 +3,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-28 11:46+0200\n"
-"PO-Revision-Date: 2026-10-20 15:02+0000\n"
-"Last-Translator: Sam McHardy <sammchardy@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-11-03 15:06+0000\n"
+"Last-Translator: Shuai Liang <robot-dreamer@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/microblocks/ide/zh_Hans/>\n"
 "Language: zh-chs\n"
@@ -12,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.11.dev0\n"
+"X-Generator: Weblate 2026.11.1.dev0\n"
 
 #. Block in Control category
 msgid "by _"
@@ -6571,3 +6572,53 @@ msgstr "组件"
 #. CoCube library block
 msgid "wheels brake"
 msgstr "电机刹车"
+
+#. In MicroBlocks IDE project save
+msgid "Untitled"
+msgstr "无标题"
+
+#. In MicroBlocks IDE project open
+msgid "Open from URL"
+msgstr "从 URL 打开"
+
+#. In MicroBlocks IDE project open
+msgid "URL?"
+msgstr "URL?"
+
+#. MicroBlocks IDE error message.
+msgid "Installing firmware on this board needs WebUSB, which only Chrome and Edge support. You can still program the board from this browser once it has MicroBlocks firmware."
+msgstr ""
+"在此开发板上安装固件需要使用 WebUSB，该功能仅 Chrome 和 Edge 浏览器支持。一旦"
+"开发板中安装了 MicroBlocks 固件，你便可直接通过浏览器对其进行编程。"
+
+#. MicroBlocks IDE error message.
+msgid "Close any other program or browser tab using the board, then try again."
+msgstr "关闭使用该电路板的任何其他程序或浏览器标签页，然后重试。"
+
+#. Confirmation window
+msgid "Restore unsaved work?"
+msgstr "恢复未保存的工作？"
+
+#. Scripting area right-click context menu
+msgid "paste all scripts from clipboard"
+msgstr "粘贴剪贴板中的所有脚本"
+
+#. Block selection right-click context menu
+msgid "copy selection"
+msgstr "复制选择的积木"
+
+#. Block selection right-click context menu
+msgid "run selected"
+msgstr "运行选择的积木"
+
+#. Block selection right-click context menu
+msgid "stop selected"
+msgstr "停止选择的积木"
+
+#. Block selection right-click context menu
+msgid "toggle selected"
+msgstr "运行选择的积木"
+
+#. MicroBlocks IDE error message.
+msgid "Could not open serial port"
+msgstr "无法打开串口"
