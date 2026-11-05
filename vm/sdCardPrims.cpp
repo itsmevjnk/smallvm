@@ -9,6 +9,7 @@
 
 #include "mem.h"
 #include "interp.h"
+#include "sdCardPrims.h"
 
 #ifdef ARDUINO_WEACT
 #include "SdFat.h"
@@ -134,10 +135,11 @@ static void initSecondarySPI() {
 }
 #endif
 
-static void initSDCard(int chipSelectPin) {
+void initSDCard(int chipSelectPin) {
 	#ifdef ARDUINO_WEACT
-	if (!SD.begin(cfg)) {
+	if (sdCardCSPin != 0 && !SD.begin(cfg)) {
 		outputString("Could not open SD Card.");
+		sdCardCSPin = -1;
 		return;
 	} else {
 		sdCardCSPin = 0; // not used in this board, but will prevent reinitializing
@@ -171,11 +173,12 @@ static void initSDCard(int chipSelectPin) {
 	#endif
 }
 
+bool sdCardInitialized() { return (sdCardCSPin >= 0); }
+
 static char *extractFilename(OBJ obj) {
 	fullPath[0] = '\0';
 	if (IS_TYPE(obj, StringType)) {
 		char *fileName = obj2str(obj);
-		if (strcmp(fileName, "ublockscode") == 0) return fullPath;
 		if ('/' == fileName[0]) return fileName; // fileName already had a leading "/"
 		snprintf(fullPath, MAX_FILE_PATH - 1, "/%s", fileName);
 	} else {
