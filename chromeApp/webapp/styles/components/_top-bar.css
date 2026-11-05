@@ -191,6 +191,7 @@
 
 		&:hover {
 			color: var(--color-boolean-green--hover);
+			cursor: pointer;
 		}
 	}
 }
@@ -212,6 +213,7 @@
 
 		&:hover {
 			color: var(--color-boolean-red--hover);
+			cursor: pointer;
 		}
 	}
 }
