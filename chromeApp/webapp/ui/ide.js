@@ -380,6 +380,17 @@ document.addEventListener('scripts.redoAvailable', e => {
 	}
 });
 
+// Connection and other states
+document.addEventListener(
+	'board.connected',
+	(e) => {
+		if (e.detail.value) {
+			IDE.element.classList.add('--is-connected');
+		} else {
+			IDE.element.classList.remove('--is-connected');
+		}
+	}
+);
 
 // Dark Mode
 document.addEventListener('preference.darkMode', e => {
