@@ -179,11 +179,19 @@
 	width: var(--space-24);
 	height: var(--space-24);
 
-	color: var(--color-yellow-action);
-	transition: color var(--duration-75) ease-in;
+	color: var(--color-blue-grey-700);
+	transition: color var(--duration-100) ease-in;
 
 	&:hover {
-		color: var(--color-yellow-action--hover);
+		cursor: not-allowed;
+	}
+
+	.--is-connected & {
+		color: var(--color-boolean-green);
+
+		&:hover {
+			color: var(--color-boolean-green--hover);
+		}
 	}
 }
 
@@ -193,9 +201,17 @@
 	height: var(--space-24);
 
 	color: var(--color-blue-grey-700);
-	transition: color var(--duration-75) ease-in;
+	transition: color var(--duration-100) ease-in;
 
 	&:hover {
-		color: var(--color-boolean-red--hover);
+		cursor: not-allowed;
+	}
+
+	.--is-connected & {
+		color: var(--color-boolean-red);
+
+		&:hover {
+			color: var(--color-boolean-red--hover);
+		}
 	}
 }
