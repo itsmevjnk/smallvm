@@ -49,7 +49,10 @@ cd ../../../out
 rm -rf microblocks-linux
 fi
 
-if [[ "$system" == 'all' || "$system" == 'macos' ]]; then
+if [[ "$system" == 'macos' ]]; then
+# the MacOS .zip file is not signed so it won't run (MacOS says it is corrupted)
+# thus, do not build Mac app for 'all' so that it doesn't get built for releases
+# it must be manually built, signed, and uplaoded by an Apple developer (currently John)
 echo "Zipping MacOS release..."
 rm -rf MicroBlocks.app
 mv ../prepack/macos/MicroBlocks.app .
