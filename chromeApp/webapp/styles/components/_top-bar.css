@@ -168,12 +168,9 @@
 
 
 	/* Connected */
-	&.--is-connected {
-
-		.top-bar__button-rounded {
-			color: var(--color-blue-grey-900);
-			background-color: var(--color-boolean-green);
-		}
+	.ide.--is-connected & .top-bar__button-rounded {
+		color: var(--color-blue-grey-900);
+		background-color: var(--color-boolean-green);
 	}
 }
 
