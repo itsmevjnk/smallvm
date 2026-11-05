@@ -583,7 +583,9 @@ InputSlotMorph.prototype.evaluate = function () {
 	if (this.mbValueText === val) {
 		return this.mbValue;
 	}
-	if (this.isNumeric || (this.isAlphanumeric && /^-?\d+$/.test(val))) {
+	// An auto slot is numeric and alphanumeric both. It holds a number only
+	// when the whole text is an integer, so '1,2,3' stays text.
+	if ((this.isNumeric && !this.isAlphanumeric) || (this.isAlphanumeric && /^-?\d+$/.test(val))) {
 		let num = parseInt(val, 10);
 		if (!isNaN(num)) return num;
 	}
