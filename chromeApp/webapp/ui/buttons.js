@@ -216,17 +216,6 @@ Buttons.connectWidget = function () {
 	// Clicking anywhere in the widget triggers the menu
 	container.onclick = () => { Menus.popUp('connection', container); };
 
-	document.addEventListener(
-		'board.connected',
-		(e) => {
-			if (e.detail.value) {
-				container.classList.add('--is-connected');
-			} else {
-				container.classList.remove('--is-connected');
-			}
-		}
-	);
-
 	return container;
 };
 
