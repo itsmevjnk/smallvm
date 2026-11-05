@@ -49,6 +49,8 @@
 	#define OBJSTORE_BYTES 11000
 #elif defined(HAS_CAMERA)
 	#define OBJSTORE_BYTES 230000 // will be allocated from PSRAM
+#elif defined(NEZHA_ESP32)
+	#define OBJSTORE_BYTES 40000 // reduced from 64000
 #elif defined(ESP32_S2)
 	#define OBJSTORE_BYTES 12000 // https test: 20000 fails, 16000 fails
 #elif defined(ESP32_C3)
