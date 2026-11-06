@@ -808,9 +808,9 @@ void outputString(const char *s) {
 	waitForOutbufBytes(byteCount + 50);
 	sendMessage(outputValueMsg, 255, (byteCount + 1), data);
 
-	// wait for string to be sent:
-	while (ideConnected() && (OUTBUF_BYTES() > 0)) {
-		sendData(); // should eventually create enough room for bytesNeeded
+	int debug = false; // // to debug VM crashes, change to true to force output before proceeding
+	while (debug && ideConnected() && (OUTBUF_BYTES() > 0)) {
+		sendData(); // send data until entire string is sent
 	}
 }
 
