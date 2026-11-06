@@ -453,6 +453,10 @@ static void interpDebug(int ip, int cmd, int arg, int sp) {
 	goto *jumpTable[CMD(op)]; \
 }
 
+// A primitive that handles messages may stop this task, or stop it and reuse its slot
+// for a new start. Then leave runTask without touching the task.
+#define RETURN_IF_TASK_REPLACED() { if (task->startID != startID) { errorCode = noError; return; } }
+
 // Macro for debugging stack errors
 #define SHOW_SP(s) { \
 	outputString(s); \
@@ -604,6 +608,7 @@ static void runTask(Task *task) {
 	};
 
 	// Restore task state
+	uint8 startID = task->startID;
 	ip = (int16 *) task->code + task->ip;
 	sp = task->stack + task->sp;
 	fp = task->stack + task->fp;
@@ -1310,6 +1315,7 @@ static void runTask(Task *task) {
 		ip++; // skip second instruction word
 		arg = arg & 0xFF; // argument count
 		doPrimitiveCall(tmp, obj2str(tmpObj), arg, sp - arg);
+		RETURN_IF_TASK_REPLACED();
 		POP_ARGS_COMMAND();
 		DISPATCH();
 	reporterPrimitive_op:
@@ -1317,7 +1323,9 @@ static void runTask(Task *task) {
 		tmpObj = (OBJ) (ip + (*ip & 0x3FF)); // primitive name object
 		ip++; // skip second instruction word
 		arg = arg & 0xFF; // argument count
-		*(sp - arg) = doPrimitiveCall(tmp, obj2str(tmpObj), arg, sp - arg);
+		tmpObj = doPrimitiveCall(tmp, obj2str(tmpObj), arg, sp - arg);
+		RETURN_IF_TASK_REPLACED();
+		*(sp - arg) = tmpObj;
 		POP_ARGS_REPORTER();
 		DISPATCH();
 
@@ -1358,6 +1366,7 @@ static void runTask(Task *task) {
 				} else { // callee is a named primitive (i.e. a pointer to a C function)
 					tmpObj = ((PrimitiveFunction) callee)(paramCount, sp - paramCount); // call the primitive
 					tempGCRoot = NULL; // clear tempGCRoot in case it was used
+					RETURN_IF_TASK_REPLACED();
 					sp -= paramCount;
 					*sp++ = tmpObj; // push primitive return value
 					DISPATCH();

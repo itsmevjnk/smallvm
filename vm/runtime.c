@@ -249,6 +249,8 @@ void initTasks() {
 	taskCount = 0;
 }
 
+static uint8 lastStartID = 0;
+
 void startTaskForChunk(uint8 chunkIndex) {
 	// Start a task for the given chunk, if there is not one already.
 
@@ -271,6 +273,8 @@ void startTaskForChunk(uint8 chunkIndex) {
 
 	memset(&tasks[i], 0, sizeof(Task));
 	tasks[i].status = running;
+	if (0 == ++lastStartID) lastStartID = 1; // 0 is reserved for a cleared task
+	tasks[i].startID = lastStartID;
 	tasks[i].taskChunkIndex = chunkIndex;
 	tasks[i].currentChunkIndex = chunkIndex;
 	tasks[i].code = chunks[chunkIndex].code;
