@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: interest@microblocks.fun\n"
 "POT-Creation-Date: 2024-10-30 06:26+0200\n"
-"PO-Revision-Date: 2026-11-07 01:16+0000\n"
+"PO-Revision-Date: 2026-11-08 15:08+0000\n"
 "Last-Translator: Miroslav Klimoš <user-"
 "97124@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/microblocks/ide/"
@@ -3907,213 +3907,217 @@ msgstr "Cutebot"
 
 #. Cutebot library block
 msgid "Cutebot set wheel left _ right _ (-100 to 100)"
-msgstr ""
+msgstr "Cutebot nastav rychlost kol levé _ pravé _ (-100 až 100)"
 
 #. Cutebot library block
 msgid "Cutebot stop wheels"
-msgstr ""
+msgstr "Cutebot zastav kola"
 
 #. Cutebot library block
 msgid "Cutebot set servo _ to _ degrees (-90 to 90)"
-msgstr ""
+msgstr "Cutebot nastav servo _ do úhlu _ (-90° až 90°)"
 
 #. Cutebot library block
 msgid "Cutebot set servo _ to speed _ (-100 to 100)"
-msgstr ""
+msgstr "Cutebot nastav servo _ na rychlost _ (-100 až 100)"
 
 #. Cutebot library block
 msgid "Cutebot set headlight _ to _"
-msgstr ""
+msgstr "Cutebot nastav přední světlo _ na _"
 
 #. Cutebot library block
 msgid "Cutebot set NeoPixel _ to _"
-msgstr ""
+msgstr "Cutebot nastav Neopixel _ na _"
 
 #. Cutebot library block
 msgid "Cutebot _ line sensor"
-msgstr ""
+msgstr "Cutebot senzor čáry _"
 
 #. Cutebot library block
 msgid "Cutebot sees line on left _ right _"
-msgstr ""
+msgstr "Cutebot čára vlevo _ vpravo _"
 
 #. Cutebot library block
 msgid "Cutebot distance (cm)"
-msgstr ""
+msgstr "Cutebot vzdálenost (cm)"
 
 #. Cutebot Pro library block dropdown option
 #. as in "left" light
 msgid "cutebotlight;left"
-msgstr ""
+msgstr "levé"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" light
 msgid "cutebotlight;right"
-msgstr ""
+msgstr "pravé"
 
 #. Cutebot Pro library block dropdown option
 #. as in "both" lights
 msgid "cutebotlight;both"
-msgstr ""
+msgstr "obě"
 
 #. Cutebot Pro library block dropdown option
 #. as in "left" side
 msgid "cutebotside;left"
-msgstr ""
+msgstr "vlevo"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" side
 msgid "cutebotside;right"
-msgstr ""
+msgstr "vpravo"
 
 #. Cutebot Pro library block dropdown option
 #. as in "left" wheel
 msgid "cutebotwheel;left"
-msgstr ""
+msgstr "levé"
 
 #. Cutebot Pro library block dropdown option
 #. as in "right" wheel
 msgid "cutebotwheel;right"
-msgstr ""
+msgstr "pravé"
 
 #. Cutebot Pro library block dropdown option
 #. as in "both" wheels
 msgid "cutebotwheel;both"
-msgstr ""
+msgstr "obě"
 
 #. Cutebot Pro library block dropdown option
 msgid "45 degrees"
-msgstr ""
+msgstr "45°"
 
 #. Cutebot Pro library block dropdown option
 msgid "90 degrees"
-msgstr ""
+msgstr "90°"
 
 #. Cutebot Pro library block dropdown option
 msgid "135 degrees"
-msgstr ""
+msgstr "135°"
 
 #. Cutebot Pro library block dropdown option
 msgid "180 degrees"
-msgstr ""
+msgstr "180°"
 
 #. Cutebot Pro library block dropdown option
 #. robot motion direction
 msgid "cutebot;forward"
-msgstr ""
+msgstr "dopředu"
 
 #. Cutebot Pro library block dropdown option
 #. robot motion direction
 msgid "cutebot;backward"
-msgstr ""
+msgstr "dozadu"
 
 #. Cutebot Pro library block dropdown option
 msgid "180 degree"
-msgstr ""
+msgstr "180°"
 
 #. Cutebot Pro library block dropdown option
 msgid "270 degree"
-msgstr ""
+msgstr "270°"
 
 #. Cutebot Pro library block dropdown option
 msgid "360 degree"
-msgstr ""
+msgstr "360°"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "left"
 msgid "cutebotturn;left"
-msgstr ""
+msgstr "doleva"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "right"
 msgid "cutebotturn;right"
-msgstr ""
+msgstr "doprava"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "left" on your axis
 msgid "cutebotturn;left-in-place"
-msgstr ""
+msgstr "doleva na místě"
 
 #. Cutebot Pro library block dropdown option
 #. as in turn "right" on your axis
 msgid "cutebotturn;right-in-place"
-msgstr ""
+msgstr "doprava na místě"
 
 #. Cutebot Pro library block
 msgid "CBPro set wheel speed left _ right _ (-60 to 60 cm/s)"
-msgstr ""
+msgstr "CBPro nastav rychlosti kol levé _ pravé _ (-60 až 60 cm/s)"
 
 #. Cutebot Pro library block
+#, fuzzy
 msgid "CBPro speed of _ wheel (cm/s)"
-msgstr ""
+msgstr "CBPro zjisti rychlost kola _ (cm/s)"
 
 #. Cutebot Pro library block
 msgid "CBPro stop wheel _"
-msgstr ""
+msgstr "CBPro zastav kolo _"
 
 #. Cutebot Pro library block
 msgid "CBPro stop all"
-msgstr ""
+msgstr "CBPro zastav vše"
 
 #. Cutebot Pro library block
 msgid "CBPro move _ (-255 to 255 cm)"
-msgstr ""
+msgstr "CBPro posuň o _ cm (-255 až 255)"
 
 #. Cutebot Pro library block
 msgid "CBPro turn _ degrees"
-msgstr ""
+msgstr "CBPro otoč o _ °"
 
 #. Cutebot Pro library block
 msgid "CBPro set headlight _ to _"
-msgstr ""
+msgstr "CBPro nastav _ přední světlo na _"
 
 #. Cutebot Pro library block
 msgid "CBPro set NeoPixel _ to _"
-msgstr ""
+msgstr "CBPro nastav NeoPixel _ na _"
 
 #. Cutebot Pro library block
 msgid "CBPro distance (cm)"
-msgstr ""
+msgstr "CBPro vzdálenost (cm)"
 
 #. Cutebot Pro library block
 msgid "CBPro tracking state is (L - - R) _ _ _ _"
-msgstr ""
+msgstr "CBPro je stav senzorů čáry _ _ _ _ (L - - R)"
 
 #. Cutebot Pro library block
+#, fuzzy
 msgid "CBPro tracking state"
-msgstr ""
+msgstr "CBPro stav senzorů čáry"
 
 #. Cutebot Pro library block
+#, fuzzy
 msgid "CBPro tracking offset"
-msgstr ""
+msgstr "CBPro offset senzorů čáry"
 
 #. Cutebot Pro library block
 msgid "CBPro IR code received?"
-msgstr ""
+msgstr "CBPro přijat IR kód ?"
 
 #. Cutebot Pro library block
 msgid "CBPro IR code"
-msgstr ""
+msgstr "CBPro IR kód"
 
 #. Cutebot Pro library block
+#, fuzzy
 msgid "CBPro set _ servo _ angle to _ deg"
-msgstr ""
+msgstr "CBPro nastav servo _ _ na úhel _ °"
 
 #. Cutebot Pro library block
 msgid "CBPro servo _ speed to _ (-100 to 100)"
-msgstr ""
+msgstr "CBPro nastav servo _ na rychlost _ % (-100 až 100)"
 
 #. Cutebot Pro library block
 msgid "CBPro set external motor power to _ (-100 to 100)"
-msgstr ""
+msgstr "CBPro nastav výkon externího motoru na _ % (-100-100)"
 
 #. Cutebot Pro library block
 msgid "CBPro stop external motor"
-msgstr ""
+msgstr "CBPro zastav externí motor"
 
 #. Cutebot Pro library block
 msgid "CBPro version"
-msgstr ""
+msgstr "CBPro verze"
 
 #. Wukong robot library label
 msgid "Wukong"
@@ -7721,3 +7725,51 @@ msgstr "přečti rychlost motoru _ (°/sec)"
 #. Nezha ESP32 Motor library block
 msgid "read motor _ relative angle (degrees)"
 msgstr "přečti relativní úhel (°) motoru _"
+
+#. Nezha ESP32 Motor library block
+msgid "turn motor _ speed _ % direction _ to absolute angle _"
+msgstr "otoč motor _ rychlostí _ % ve směru _ do úhlu _ °"
+
+#. Nezha ESP32 Motor library block
+msgid "turn motor _ speed _ % direction _ for _ _"
+msgstr "roztoč motor _ rychlostí _ % ve směru _ po _ _"
+
+#. Nezha ESP32 Motor library block
+msgid "reset motor _ position"
+msgstr "vynuluj pozici motoru _"
+
+#. Nezha ESP32 Motor library block
+#, fuzzy
+msgid "drive robot at _ % speed _ with _ acceleration for _ _"
+msgstr "robot jeď na _ % rychlost _ s akcelerací _ po _ _"
+
+#. Nezha ESP32 Motor library block
+#, fuzzy
+msgid "run robot left wheel speed _ % right wheel speed _ %"
+msgstr "robot levé kolo rychlost _ % pravé kolo rychlost _ %"
+
+#. Nezha ESP32 Motor library block
+#, fuzzy
+msgid "set robot left wheel _ right wheel _"
+msgstr "nastav robota - pravé kolo _ levé kolo _"
+
+#. Nezha ESP32 Motor library block
+msgid "set robot wheel diameter _ mm"
+msgstr "nastav průměr kola robota na _ mm"
+
+#. Nezha ESP32 Motor library block
+msgid "stop robot"
+msgstr "zastav robota"
+
+#. Nezha ESP32 Motor library block
+#, fuzzy
+msgid "turn robot at _ % speed with _ acceleration by _ degrees"
+msgstr "otoč robota rychlostí _ % s akcelerací _ o úhel _ °"
+
+#. Nezha ESP32 Motor library block
+msgid "start motor _ speed _ % direction _"
+msgstr "spusť motor _ rychlostí _ % ve směru _"
+
+#. Nezha ESP32 Motor library block
+msgid "stop motor _"
+msgstr "zastav motor _"
