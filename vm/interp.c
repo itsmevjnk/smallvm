@@ -1500,9 +1500,9 @@ void vmLoop() {
 			}
 		}
 		if (taskSleepUSecs) {
-			// if any task called taskSleep(), do VM background tasks sooner
+			// if any task called taskSleep(), do VM background tasks right away
 			taskSleepUSecs = 0;
-			count = (count < 5000) ? count : 5000;
+			count = 0;
 		}
 	}
 }
