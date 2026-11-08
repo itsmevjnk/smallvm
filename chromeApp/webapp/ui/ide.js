@@ -384,6 +384,7 @@ document.addEventListener('scripts.redoAvailable', e => {
 document.addEventListener(
 	'board.connected',
 	(e) => {
+		if (IDE.element == null) return; // IDE not yet initialized
 		if (e.detail.value) {
 			IDE.element.classList.add('--is-connected');
 		} else {
