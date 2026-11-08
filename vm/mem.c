@@ -114,20 +114,15 @@ void memInit() {
 
 	if (objStoreWords > 65525) objStoreWords = 65525; // maximum object store size
 
-	#if defined(MB_USE_PSRAM_OBJECT_STORE)
-		// Attempt to allocate objectstore from PSRAM
-
-		if (hasPSRAM()) {
+	#if defined(ARDUINO_ARCH_ESP32)
+		#if defined(MB_USE_PSRAM_OBJECT_STORE)
+			// Attempt to allocate objectstore from PSRAM
 			objstore = (OBJ *) heap_caps_malloc(4 * objStoreWords, MALLOC_CAP_SPIRAM);
-		}
+		#endif
 		if (!objstore) {
 			// Failed to allocate from PSRAM; try allocating from internal RAM
-			outputString("Could not allocate objectstore from PSRAM; using internal RAM");
 			objstore = (OBJ *) heap_caps_malloc(4 * objStoreWords, MALLOC_CAP_INTERNAL);
 		}
-		if (!objstore) vmPanic("ESP32 could not allocate objectstore");
-	#elif defined(ARDUINO_ARCH_ESP32)
-		objstore = (OBJ *) heap_caps_malloc(4 * objStoreWords, MALLOC_CAP_INTERNAL);
 		if (!objstore) vmPanic("ESP32 could not allocate objectstore");
 	#endif
 
