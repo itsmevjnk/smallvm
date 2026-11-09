@@ -22,12 +22,13 @@ class MB_Autosave {
 		// New on every load, so a page never writes over a record it has not offered.
 		this.pageID = Date.now().toString(36) + Math.random().toString(36).slice(2);
 		this.asking = false; // the restore question is open
+		this.restoring = false; // a record is being opened in place of the project
 		this.offer = Promise.resolve(); // settles once the startup question and any restore are done
 	}
 
 	start() {
 		// Called once the editor is open. Offer back what a page that is gone left
-		// behind, and keep this page's own work from now on.
+		// behind, and keep this page's own work from now on. Answers true once a restore is in place.
 		document.addEventListener('visibilitychange', () => {
 			if (document.hidden && this.timer) this.writeNow();
 		});
@@ -51,11 +52,25 @@ class MB_Autosave {
 	}
 
 	replaced() {
-		// The project was replaced by an empty one, before an open or a read from the board fills it.
-		// What this page kept of the old one goes, or a reload would offer it back.
+		// The project was replaced by an empty or an opened one. What this page kept of the old one goes,
+		// or a reload would offer it back, and so does what closed pages left: it belongs to other projects.
 		clearTimeout(this.timer);
 		this.timer = null;
 		this.remove(this.pageID);
+		if (!this.restoring) this.removeLeftBehind(); // a restore keeps the others, so each can still be restored
+	}
+
+	async removeLeftBehind() {
+		// Without Web Locks, a record another open tab is still writing looks left behind.
+		if (!navigator.locks) return;
+		try {
+			const tabs = await this.inStore('readonly', (store) => store.getAllKeys());
+			for (const tab of tabs) {
+				if ((tab !== this.pageID) && !(await this.inUse(tab))) await this.remove(tab);
+			}
+		} catch (e) {
+			this.warn(e);
+		}
 	}
 
 	async writeNow(keep = false) {
@@ -106,9 +121,9 @@ class MB_Autosave {
 			this.asking = false;
 			if (this.editor.unsavedEdits) this.edited(); // an edit made while the question was open
 		}
-		if (yes) await this.restore(record);
 		if (yes === false) await this.remove(record.tab);
-		// Closed without an answer: kept, and offered again next time.
+		// Closed without an answer: kept until a project is opened, and offered again next time.
+		return yes ? this.restore(record) : false;
 	}
 
 	ask(record) {
@@ -120,20 +135,26 @@ class MB_Autosave {
 
 	async restore(record) {
 		// Opened the way a file is. A record that cannot be opened is dropped; one the
-		// user chose not to put in place of their current work is kept.
+		// user chose not to put in place of their current work is kept. Answers whether it is in place.
 		const editor = this.editor;
 		const before = editor.project;
 		const hadWork = before.hasUserCode();
-		await editor.openProjectFromString(record.text, record.name || localized('Untitled'));
+		this.restoring = true;
+		try {
+			await editor.openProjectFromString(record.text, record.name || localized('Untitled'));
+		} finally {
+			this.restoring = false;
+		}
 		if (editor.project === before) {
 			if (!hadWork) await this.remove(record.tab);
-			return;
+			return false;
 		}
 		editor.projectName = record.name;
 		editor.updateProjectProperties();
 		editor.unsavedEdits = true; // still in no file
 		await this.writeNow(); // this page keeps it from now on
 		await this.remove(record.tab);
+		return true;
 	}
 
 	// Storage
