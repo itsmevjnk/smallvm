@@ -67,6 +67,7 @@ extern "C" int initCodeFile(uint8 *flash, int flashByteCount) {
 	codeFile = SD.open(FILE_NAME, O_RDONLY);
 	if (!codeFile) clearCodeFile(0);
 	if (codeFile) codeFile.seekSet(0);
+	// read code file into simulated Flash:
 	int bytesRead = codeFile.read((char*) flash, flashByteCount);
 	#else
 	codeFile = myFS.open(FILE_NAME, "r");
@@ -90,6 +91,7 @@ extern "C" void writeCodeFileWord(int word) {
 extern "C" void clearCodeFile(int cycleCount) {
 	if (codeFile) codeFile.close();
 	#ifdef ARDUINO_WEACT
+	SD.remove("ublockscode"); // just in case
 	codeFile = SD.open(FILE_NAME, O_RDWR | O_CREAT | O_TRUNC); // truncate file to zero length
 	#else
 	codeFile = myFS.open(FILE_NAME, "w"); // truncate file to zero length
