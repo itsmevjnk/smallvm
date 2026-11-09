@@ -813,11 +813,13 @@ static void runTask(Task *task) {
 	returnResult_op:
 		tmpObj = *(sp - 1); // return value
 		if (fp == task->stack) { // not in a function call
-			if (!hasOutputSpace(bytesForObject(tmpObj) + 100)) { // leave room for other messages
-				ip--; // retry when task is resumed
-				goto suspend;
+			if (ideConnected()) {
+				if (!hasOutputSpace(bytesForObject(tmpObj) + 100)) { // leave room for other messages
+					ip--; // retry when task is resumed
+					goto suspend;
+				}
+				sendTaskReturnValue(task->taskChunkIndex, tmpObj);
 			}
-			sendTaskReturnValue(task->taskChunkIndex, tmpObj);
 			task->status = unusedTask;
 			goto suspend;
 		}
