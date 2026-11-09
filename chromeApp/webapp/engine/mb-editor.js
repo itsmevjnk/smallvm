@@ -577,7 +577,8 @@ class MB_Editor {
 			const title = this.projectName.replace(/\.ubp$/, '');
 			code = "projectName '" + fixEmbeddedQuotes(title) + "'\n\n" + code;
 		}
-		return this.urlPrefix(pageURL) + '?project=' + MB_ScriptExchange.urlEncode(code);
+		// In the fragment, which the browser does not send, so the server cannot refuse a large project.
+		return this.urlPrefix(pageURL) + '#project=' + MB_ScriptExchange.urlEncode(code);
 	}
 
 	urlPrefix(pageURL) {
