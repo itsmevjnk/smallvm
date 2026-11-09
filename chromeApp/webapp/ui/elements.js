@@ -22,8 +22,8 @@ function newButton(label, action) {
 	return button;
 };
 
-function newDiv(className) {
-	return newElement('div', className);
+function newDiv(className, element = null) {
+	return newElement(element ?? 'div', className);
 };
 
 function newLabel(text) {
