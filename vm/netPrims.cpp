@@ -549,7 +549,7 @@ static OBJ primHttpConnect(int argCount, OBJ *args) {
 	#endif
 
 	while (ok && !httpClient.connected()) { // wait for connection to be fully established
-		processMessage(); // process messages now
+		captureIncomingBytes(); // the VM handles them once this primitive returns
 		uint32 now = millisecs();
 		uint32 elapsed = (now >= start) ? (now - start) : now; // handle clock wrap
 		if (elapsed > timeout) break;
@@ -561,7 +561,7 @@ static OBJ primHttpConnect(int argCount, OBJ *args) {
 	} else {
 		httpClient.stop();
 	}
-	processMessage(); // process messages now
+	taskSleep(-1); // let the VM handle messages once this task yields, not mid-primitive
 	return falseObj;
 }
 
@@ -596,7 +596,7 @@ static OBJ primHttpSecureConnect(int argCount, OBJ *args) {
 	ok = activeHttpClient->connect(host, port);
 
 	while (ok && !activeHttpClient->connected()) {
-		processMessage(); // process messages now
+		captureIncomingBytes(); // the VM handles them once this primitive returns
 		uint32 now = millisecs();
 		uint32 elapsed = (now >= start) ? (now - start) : now;
 		if (elapsed > timeout) break;
@@ -608,7 +608,7 @@ static OBJ primHttpSecureConnect(int argCount, OBJ *args) {
 		activeHttpClient = &httpClient;
 	}
 
-	processMessage(); // process messages now
+	taskSleep(-1);
 	return falseObj;
 }
 
