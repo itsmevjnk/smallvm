@@ -330,7 +330,7 @@ static OBJ primEndOfFile(int argCount, OBJ *args) {
 	int i = entryFor(fileName);
 	if (i < 0) return trueObj;
 
-	processMessage();
+	taskSleep(-1); // let the VM handle messages once this task yields, not mid-primitive
 	return (!fileEntry[i].file.available()) ? trueObj : falseObj;
 }
 
@@ -356,7 +356,7 @@ static OBJ primReadLine(int argCount, OBJ *args) {
 	if (result) {
 		memcpy(obj2str(result), buf, byteCount);
 	}
-	processMessage();
+	taskSleep(-1);
 	return result;
 }
 
@@ -393,7 +393,7 @@ static OBJ primReadBytes(int argCount, OBJ *args) {
 			return result;
 		}
 	}
-	processMessage();
+	taskSleep(-1);
 	return newObj(ByteArrayType, 0, falseObj); // empty byte array
 }
 
@@ -426,7 +426,7 @@ static OBJ primReadPosition(int argCount, OBJ *args) {
 		result = fileEntry[i].file.position();
 		#endif
 	}
-	processMessage();
+	taskSleep(-1);
 	return int2obj(result);
 }
 
@@ -507,7 +507,7 @@ static OBJ primAppendLine(int argCount, OBJ *args) {
 		fileEntry[i].file.flush();
 		fileEntry[i].file.seekSet(oldPos); // reset position for reading
 	}
-	processMessage();
+	taskSleep(-1);
 	return falseObj;
 }
 
@@ -539,7 +539,7 @@ static OBJ primAppendBytes(int argCount, OBJ *args) {
 	fileEntry[i].file.flush();
 	fileEntry[i].file.seekSet(oldPos); // reset position for reading
 
-	processMessage();
+	taskSleep(-1);
 	return falseObj;
 }
 
