@@ -374,6 +374,7 @@ extern OBJ lastBroadcast;
 void startReceiversOfBroadcast(char *msg, int byteCount) {
 	// Start tasks for chunks with hat blocks matching the given broadcast if not already running.
 
+	// save the last broadcast message
 	lastBroadcast = newStringFromBytes(msg, byteCount);
 	for (int i = 0; i < MAX_CHUNKS; i++) {
 		int chunkType = chunks[i].chunkType;
@@ -890,16 +891,13 @@ static void sendVersionString(int chunkIndex) {
 }
 
 void sendBroadcastToIDE(char *s, int len) {
+	taskSleep(1); // yield even when not connected to IDE. Also avoid Boardie lockup
+	if (!ideConnected()) { return; }
 	int spaceNeeded = len + 50; // leave room for header and a few other messages
 	if (!hasOutputSpace(spaceNeeded)) {
-		if (!ideConnected()) {
-			return; // apparently not connected to IDE
-		} else {
-			waitForOutbufBytes(spaceNeeded);
-		}
+		waitForOutbufBytes(spaceNeeded);
 	}
 	sendMessage(broadcastMsg, 0, len, s);
-	taskSleep(1); // avoid Boardie lockup
 }
 
 void sendSayForChunk(char *s, int len, uint8 chunkIndex) {
