@@ -23,6 +23,7 @@ class MB_Autosave {
 		this.pageID = Date.now().toString(36) + Math.random().toString(36).slice(2);
 		this.asking = false; // the restore question is open
 		this.restoring = false; // a record is being opened in place of the project
+		this.started = null; // when the startup offer looked at the records
 		this.offer = Promise.resolve(); // settles once the startup question and any restore are done
 	}
 
@@ -34,6 +35,7 @@ class MB_Autosave {
 		});
 		// Held while this page is open, so another tab can tell that its record is in use.
 		if (navigator.locks) navigator.locks.request(this.lockName(this.pageID), () => new Promise(() => {}));
+		this.started = Date.now();
 		this.offer = this.offerRestore().catch((e) => this.failed(e));
 		return this.offer;
 	}
@@ -61,12 +63,13 @@ class MB_Autosave {
 	}
 
 	async removeLeftBehind() {
-		// Without Web Locks, a record another open tab is still writing looks left behind.
-		if (!navigator.locks) return;
+		// Only records the startup offer could have shown: a newer one is from a tab that closed or
+		// crashed since. Without Web Locks, a record another open tab is still writing looks left behind.
+		if (!navigator.locks || !this.started) return;
 		try {
-			const tabs = await this.inStore('readonly', (store) => store.getAllKeys());
-			for (const tab of tabs) {
-				if ((tab !== this.pageID) && !(await this.inUse(tab))) await this.remove(tab);
+			const records = await this.inStore('readonly', (store) => store.getAll());
+			for (const r of records) {
+				if ((r.tab !== this.pageID) && (r.time < this.started) && !(await this.inUse(r.tab))) await this.remove(r.tab);
 			}
 		} catch (e) {
 			this.warn(e);
