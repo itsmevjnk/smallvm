@@ -461,8 +461,8 @@ InputSlotMorph.prototype.mouseClickLeft = function (pos) {
 	var hand = this.world().hand;
 
 	// the pan carries the slot back under the hand, but its end is not a click
-	if (this.pans() && hand.grabPosition &&
-			hand.grabPosition.distanceTo(hand.position()) > MorphicPreferences.grabThreshold) return;
+	if (this.pans() && (hand.fingerDown ? hand.touchMoved : (hand.grabPosition &&
+			hand.grabPosition.distanceTo(hand.position()) > MorphicPreferences.grabThreshold))) return;
 	if (this.isReadOnly || this.symbol) {
 		// a read-only slot with no menu takes the click as its block does
 		if (!this.dropDownMenu()) this.escalateEvent('mouseClickLeft', pos);
@@ -846,6 +846,38 @@ InputSlotTextMorph.prototype.getRenderColor =
 
 InputSlotTextMorph.prototype.getShadowRenderColor =
 	InputSlotStringMorph.prototype.getShadowRenderColor;
+
+// A finger edits slot text when it lifts without having moved, so a swipe that
+// starts on the text pans the pane instead. Text already being edited takes the
+// press as before, to place the cursor.
+
+function slotTextEditedOnRelease(enableSelecting, mouseClickLeft) {
+	return {
+		enableSelecting: function () {
+			var editOnPress;
+			enableSelecting.call(this);
+			editOnPress = this.mouseDownLeft;
+			this.mouseDownLeft = function (pos) {
+				var cursor = this.root().cursor;
+				if (this.world().hand.fingerDown && !(cursor && (cursor.target === this))) {
+					this.escalateEvent('mouseDownLeft', pos);
+				} else {
+					editOnPress.call(this, pos);
+				}
+			};
+		},
+		mouseClickLeft: function (pos) {
+			var hand = this.world().hand;
+			if (hand.fingerDown && hand.touchMoved) return;
+			mouseClickLeft.call(this, pos);
+		}
+	};
+}
+
+Object.assign(InputSlotStringMorph.prototype, slotTextEditedOnRelease(
+	StringMorph.prototype.enableSelecting, StringMorph.prototype.mouseClickLeft));
+Object.assign(InputSlotTextMorph.prototype, slotTextEditedOnRelease(
+	TextMorph.prototype.enableSelecting, TextMorph.prototype.mouseClickLeft));
 
 // TemplateSlotMorph ///////////////////////////////////////////////////
 
