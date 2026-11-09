@@ -3054,7 +3054,10 @@ class MB_Editor {
 			// adds a step for undo to stop at. A dropped file passes false and skips it.
 			const cleared = clearFirst ? MB_editor.clearProject() : null;
 			// Without clearProject the old scripts stay on screen, and the next save keeps them.
-			if (!clearFirst) MB_editor.removeAllScripts();
+			if (!clearFirst) {
+				MB_editor.removeAllScripts();
+				if (MB_editor.autosave) MB_editor.autosave.replaced(); // as clearProject does
+			}
 			MB_editor.saveNeeded = false; // don't save scripts while project is loading, as GP does
 			MB_editor.project = project;
 			MB_editor.implementationLibs.clear(); // an opened project's libraries are all its own
