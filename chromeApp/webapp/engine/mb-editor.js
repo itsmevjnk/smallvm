@@ -1041,7 +1041,7 @@ class MB_Editor {
 				this.paletteY += 20 / ZOOM;
 			} else if ('advanced' == op) {
 				if (!this.devMode()) return; // the rest is for developer mode
-				this.addPaletteLabel('Advanced:');
+				this.addPaletteLabel(localized('Advanced:'));
 			} else if (this.showHiddenBlocks() || !op.startsWith('_')) {
 				let spec = MB_Specs.specArrayForProjectSpec(this.project.blockSpecs.get(op))
 					|| MB_Specs.specArrayForSelector(op);
@@ -1111,7 +1111,7 @@ class MB_Editor {
 		if (!this.devMode()) return;
 		let specs = MB_Specs.specsForCategory(cat + '-Advanced');
 		if (specs.length == 0) return;
-		this.addPaletteLabel('Advanced:');
+		this.addPaletteLabel(localized('Advanced:'));
 		this.addBlocksForSpecs(specs, cat.substring(4));
 	}
 
