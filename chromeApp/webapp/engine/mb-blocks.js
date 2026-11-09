@@ -3032,15 +3032,47 @@ HandMorph.prototype.grab = function (aMorph) {
 		isScripts = (aMorph instanceof BlockMorph) || (aMorph instanceof SelectedScriptsMorph);
 	// Picking up a block ends a selection, before the hand takes its picture.
 	if (wasEmpty && (aMorph instanceof BlockMorph)) MB_editor.scripts.cancelSelection();
-	// A reporter is held just inside its top-left, wherever it was pressed.
-	var inset = wasEmpty && (aMorph instanceof ReporterBlockMorph), origin = inset && aMorph.situation();
-	if (inset) aMorph.setPosition(this.position().subtract(10 * blockScale()));
+	// A reporter is held just inside its top-left, wherever it was pressed, and glides there.
+	var inset = wasEmpty && (aMorph instanceof ReporterBlockMorph), origin = inset && aMorph.situation(),
+		pressed = inset && aMorph.position();
+	if (inset) aMorph.setPosition(this.reporterCorner());
 	this.grabWithoutTellingChrome(aMorph);
 	if (inset && (aMorph.parent === this)) this.grabOrigin = origin; // slide back to where it lay
 	if (wasEmpty && isScripts && (aMorph.parent === this)) {
 		this.takePicture(aMorph);
 		fireIDEEvent('dragstart');
 	}
+	if (inset && (aMorph.parent === this)) this.glideToCorner(aMorph, pressed.subtract(aMorph.position()));
+};
+
+HandMorph.prototype.reporterCorner = function () {
+	// Where a held reporter's top-left goes: the pointer is just inside it.
+	return this.position().subtract(10 * blockScale());
+};
+
+HandMorph.prototype.glideMsecs = 150;
+
+HandMorph.prototype.glideToCorner = function (aMorph, offset) {
+	// Ease the held reporter from offset, relative to the corner, to the corner. Its drop
+	// target is the slot under it wherever it has got to; a drop or another grab ends the glide.
+	var hand = this, glide;
+	if (this.glide) this.glide.isActive = false;
+	this.glide = null;
+	if (offset.eq(ZERO)) return;
+	glide = new Animation(k => { // k goes from 1 to 0, easing out
+		if (aMorph.parent !== hand) {
+			glide.isActive = false;
+			return;
+		}
+		var delta = hand.reporterCorner().add(offset.multiplyBy(k).round()).subtract(aMorph.position());
+		hand.changed();
+		aMorph.moveBy(delta);
+		hand.cachedFullBounds = hand.cachedFullBounds.translateBy(delta);
+		hand.changed();
+	}, () => 1, -1, this.glideMsecs, 'cubic_in');
+	glide.setter(1);
+	this.glide = glide;
+	this.world.animations.push(glide);
 };
 
 // The hand's picture of what it holds, taken at the world's zoom, as a running script's
