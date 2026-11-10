@@ -337,7 +337,14 @@ class FileBrowser extends FloatingWindow {
 		this.clearLibraryFields();
 		let lib = this.library;
 		[
-			{ label: 'Description', content: marked.parse(lib.description) },
+			{
+				label: 'Description',
+				content:
+					marked.parse(lib.description).replace(
+						/<a /g,
+						'<a target="_blank" '
+					)
+			},
 			{ label: 'Author', content: newLabel(lib.author) },
 			{ label: 'Version', content: newLabel(lib.version.join('.')) },
 			{
