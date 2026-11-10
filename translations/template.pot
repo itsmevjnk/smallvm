@@ -7952,6 +7952,10 @@ msgstr ""
 msgid "Libraries"
 msgstr ""
 
+#. Load library window title
+msgid "Load Library"
+msgstr ""
+
 #. Load project window title
 msgid "Load Project"
 msgstr ""
