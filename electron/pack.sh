@@ -9,6 +9,9 @@ tag="v$electron_version"
 system=$1
 version=$2
 
+# build files.txt
+../tools/buildFileList.sh
+
 echo "Building MicroBlocks v$version with electron version $electron_version for $system"
 
 if test -n "$version"; then
