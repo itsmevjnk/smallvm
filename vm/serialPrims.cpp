@@ -356,7 +356,7 @@ static void serialWriteSync(uint8 *buf, int bytesToWrite) {
 				updateMicrobitDisplay(); // update display while sending to avoid flicker
 			#endif
 			checkButtons();
-			processMessage();
+			taskSleep(-1); // let the VM handle messages once this task yields, not mid-primitive
 			delay(1);
 		}
 	}

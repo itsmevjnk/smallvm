@@ -537,24 +537,15 @@ static OBJ primHttpConnect(int argCount, OBJ *args) {
 
 	if (httpClient.connected()) httpClient.stop(); // in case previous connection is still active
 
-	uint32 start = millisecs();
 	const int timeout = 3000;
 	int ok;
 
 	httpClient.setTimeout(timeout);
-	ok = httpClient.connect(host, port);
+	ok = httpClient.connect(host, port); // returns once connected or failed
 
 	#if defined(ESP8266)
 		httpClient.setNoDelay(true); // does not work on ESP32
 	#endif
-
-	while (ok && !httpClient.connected()) { // wait for connection to be fully established
-		captureIncomingBytes(); // the VM handles them once this primitive returns
-		uint32 now = millisecs();
-		uint32 elapsed = (now >= start) ? (now - start) : now; // handle clock wrap
-		if (elapsed > timeout) break;
-		delay(1);
-	}
 
 	if (ok && httpClient.connected()) {
 		activeHttpClient = &httpClient;
@@ -588,20 +579,11 @@ static OBJ primHttpSecureConnect(int argCount, OBJ *args) {
 		activeHttpClient = &httpsClient;
 	#endif
 
-	uint32 start = millisecs();
 	const int timeout = 5000; // increased from 3 to 5 secs to try to reduce failed connections
 	int ok;
 
 	activeHttpClient->setTimeout(timeout);
-	ok = activeHttpClient->connect(host, port);
-
-	while (ok && !activeHttpClient->connected()) {
-		captureIncomingBytes(); // the VM handles them once this primitive returns
-		uint32 now = millisecs();
-		uint32 elapsed = (now >= start) ? (now - start) : now;
-		if (elapsed > timeout) break;
-		delay(1);
-	}
+	ok = activeHttpClient->connect(host, port); // returns once connected or failed
 
 	if (!(ok && activeHttpClient->connected())) {
 		activeHttpClient->stop();
