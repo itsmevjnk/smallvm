@@ -30,6 +30,7 @@ Windows
 [ ] Windows: Alçada mínima d'acord als continguts (moltes no han de ser adaptables)
 [x] Nat: About -> Fer microblocks.fun clicable
 [ ] Al clicar en una finestra ha de passar a primer pla
+[ ] Scrollbars as CSS variable to keep consistency
 
 Opció?
 - Decidir dues o tres amplades estàndard de finestra (small, medium, large)

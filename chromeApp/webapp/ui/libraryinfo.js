@@ -23,7 +23,7 @@ class LibraryInfoWindow extends FloatingWindow {
 			height: 350,
 			width: 350,
 			resizable: true,
-			className: 'library'
+			className: '--library'
 		});
 		this.cachedLibraryName = library.moduleName;
 		this.library = library;
@@ -67,31 +67,44 @@ class LibraryInfoWindow extends FloatingWindow {
 
 	bodyDiv() {
 		let div = newDiv();
+		div.classList.add('window__library');
 
 		div.appendChild(this.fieldFor('moduleName'));
 		div.appendChild(this.fieldFor('description'));
 
-		let fieldGroup = newDiv('window__field_group');
-		fieldGroup.appendChild(this.fieldFor('author'));
-		fieldGroup.appendChild(this.fieldFor('version'));
-		div.appendChild(fieldGroup);
+		// let fieldGroup = newDiv('window__field_group');
+		// fieldGroup.appendChild(this.fieldFor('author'));
+		// fieldGroup.appendChild(this.fieldFor('version'));
+		// div.appendChild(fieldGroup);
 
-		fieldGroup = newDiv('window__field_group');
-		fieldGroup.appendChild(this.fieldFor('dependencies'));
-		fieldGroup.appendChild(this.fieldFor('moduleCategory'));
-		div.appendChild(fieldGroup);
+		// fieldGroup = newDiv('window__field_group');
+		// fieldGroup.appendChild(this.fieldFor('dependencies'));
+		// fieldGroup.appendChild(this.fieldFor('moduleCategory'));
+		// div.appendChild(fieldGroup);
+
+		div.appendChild(this.fieldFor('author'));
+		div.appendChild(this.fieldFor('version'));
+		div.appendChild(this.fieldFor('dependencies'));
+		div.appendChild(this.fieldFor('moduleCategory'));
+
+
 		return div;
 	}
 
 	fieldFor(selector) {
-		let field = newDiv('window__field');
+		let field = newDiv('window__library-block');
+
+		let title = newElement('h3');
 		let label = newLabel(this.labelFor(selector));
+		title.appendChild(label);
+
 		let input =
 			['moduleName', 'author'].includes(selector) ?
 				this.textInput(selector) :
 				this[selector + 'Input']();
-		field.classList.add(selector);
-		field.appendChild(label);
+		field.classList.add(`--${selector}`);
+
+		field.appendChild(title);
 		field.appendChild(input);
 		this.fields[selector] = input;
 		return field;
@@ -125,31 +138,40 @@ class LibraryInfoWindow extends FloatingWindow {
 	}
 
 	dependenciesInput() {
-		let div = newDiv('dependency__list');
+		let div = newDiv('window__library-dependencies');
+
 		if (this.library.dependencies.length) {
+			let list = newElement('ul', 'window__library-dependencies-list');
 			this.library.dependencies.forEach(dep => {
-				let span = document.createElement('span');
-				span.innerText = this.parseLibName(dep);
-				span.setAttribute('data-value', dep);
-				div.appendChild(span);
+				let li = document.createElement('li');
+				li.innerText = this.parseLibName(dep);
+				li.setAttribute('data-value', dep);
+				list.appendChild(li);
 			});
+			div.appendChild(list);
+
 		} else {
 			let text = newLabel('None');
 			div.appendChild(text);
 		}
+
 		if (this.forEditing) {
+			let actionsContainer = newDiv('window__library-dependencies-actions');
+
 			let addButton = document.createElement('button');
 			let removeButton = document.createElement('button');
 			addButton.classList.add('button-rounded');
-			addButton.innerText = '+';
+			addButton.innerText = 'Add';
 			addButton.onclick = (event) => this.addDependency(event);
 			removeButton.classList.add('button-rounded');
-			removeButton.innerText = '-';
+			removeButton.innerText = 'Remove';
 			removeButton.onclick = (event) => {
 				this.removeDependency(event, removeButton);
 			};
-			div.appendChild(addButton);
-			div.appendChild(removeButton);
+
+			actionsContainer.appendChild(addButton);
+			actionsContainer.appendChild(removeButton);
+			div.appendChild(actionsContainer);
 		}
 		return div;
 	}
