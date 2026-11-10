@@ -20,7 +20,7 @@ class FileBrowser extends FloatingWindow {
 			title: 'Load ' + ( forLibraries ? 'Library' : 'Project'),
 			body: contents,
 			minHeight: 400,
-			minWidth: 620,
+			minWidth: forLibraries ? 720 : 480,
 			resizable: true,
 			className: '--browser'
 		});
@@ -197,7 +197,7 @@ class FileBrowser extends FloatingWindow {
 		const result = [];
 		if (this.topDir != this.currentDir) {
 			// add a fake folder that brings you one level up
-			result.push(['🡨','..',true]);
+			result.push(['..','..',true]);
 		}
 		for (const dir of dirs.sort(MB_FilePicker.caseInsensitiveOrder)) {
 			if (!dir.startsWith('.')) {
@@ -241,23 +241,25 @@ class FileBrowser extends FloatingWindow {
 			this.currentDir.slice(this.currentDir.lastIndexOf('/') + 1)
 		);
 
-		// const below =
-		// 	this.currentDir.startsWith(this.topDir) &&
-		// 		(this.currentDir.length > this.topDir.length);
-		// this.parentButton.disabled = !below;
-		// if (below) {
-		// 	this.parentButton.classList.remove('--is-disabled');
-		// } else {
-		// 	this.parentButton.classList.add('--is-disabled');
-		// }
-
 		let list = newElement('ul');
 		this.fileListView.replaceChildren(list);
 		this.folderContents().forEach(entry => {
 			let item = newElement('li');
+
 			if (entry[2]) { // isFolder
-				item.appendChild(Icon.forSelector('folder-open--14x14', 'span'));
+				let icon = 'folder-open--16x16';
+				let classname = '--folder';
+
+				// Path is directory up
+				if (entry[1] == '..') {
+					icon = 'arrow-90deg-up--16x16';
+					classname = '--folder-up';
+				}
+
+				item.classList.add(classname);
+				item.appendChild(Icon.forSelector(icon, 'span'));
 			}
+
 			item.appendChild(newLabel(isString(entry) ? entry : entry[0]));
 			item.onclick = () => this.fileOrFolderSelected(entry, false);
 			item.ondblclick = () => this.fileOrFolderDoubleClicked(entry);

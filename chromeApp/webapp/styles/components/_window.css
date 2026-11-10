@@ -238,9 +238,11 @@
 .window__browser-sidebar {
 	padding: var(--space-24) var(--space-16);
 	width: var(--space-160);
+	flex-shrink: 0;
 
 	display: flex;
 	flex-direction: column;
+	align-items: flex-start;
 	justify-content: space-between;
 	text-align: left;
 
@@ -310,6 +312,8 @@
 
 	overflow-y: auto;
 	overflow-x: hidden;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-blue-grey-200) transparent;
 
 	border-radius: var(--borderRadius-4);
 	background-color: var(--color-white);
@@ -331,8 +335,17 @@
 			display: block;
 			width: var(--space-14);
 			height: var(--space-14);
-			color: var(--color-grey-600);
 			transform: translateY(-1px);
+
+			/* Variants */
+
+			.--folder & {
+				color: var(--color-blue-grey-300);
+			}
+
+			.--folder-up & {
+				color: var(--color-black);
+			}
 
 			svg {
 				width: 100%;
@@ -355,18 +368,37 @@
 
 
 .window__browser-description {
-	width: var(--space-200);
+	width: var(--space-240);
 	flex-shrink: 0;
 	padding: var(--space-16) var(--space-12);
 
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-16);
+	gap: var(--space-20);
 
+	color: var(--color-grey-900);
 	border-radius: var(--borderRadius-4);
 	border: 1px solid var(--color-blue-grey-100);
-	overflow-y: auto;
 	text-align: left;
+
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-blue-grey-300) transparent;
+
+	p:not(:first-of-type) {
+		margin-top: var(--space-8);
+	}
+
+	a {
+		text-decoration: none;
+		color: var(--color-blocks-output);
+		border-bottom: 1px solid var(--color-blocks-output);
+		transition: opacity var(--duration-200);
+
+		&:hover {
+			opacity: 0.4;
+		}
+	}
 }
 
 
@@ -374,23 +406,12 @@
 	font-size: var(--fontSize-12);
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
-	color: var(--color-grey-800);
+	color: var(--color-grey-600);
 }
 
 
 .window__browser-description-field-value {
-	margin-top: var(--space-2);
-
-
-
-
-	/* WTF? */
-	&.__field_description {
-		ul {
-			list-style: circle;
-			padding-left: 1em;
-		}
-	}
+	margin-top: var(--space-4);
 }
 
 
