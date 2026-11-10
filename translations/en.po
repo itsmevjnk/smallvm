@@ -7952,6 +7952,10 @@ msgstr "Open port?"
 msgid "Libraries"
 msgstr "Libraries"
 
+#. Load library window title
+msgid "Load Library"
+msgstr "Load Library"
+
 #. Load project window title
 msgid "Load Project"
 msgstr "Load Project"
