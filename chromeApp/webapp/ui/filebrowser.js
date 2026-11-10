@@ -20,7 +20,7 @@ class FileBrowser extends FloatingWindow {
 			title: 'Load ' + ( forLibraries ? 'Library' : 'Project'),
 			body: contents,
 			minHeight: 400,
-			minWidth: 620,
+			minWidth: forLibraries ? 720 : 480,
 			resizable: true,
 			className: '--browser'
 		});
