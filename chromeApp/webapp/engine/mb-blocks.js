@@ -1787,6 +1787,15 @@ BlockMorph.prototype.chromeMenu = function () {
 		items.push('-');
 	}
 
+	if (this.selector == '[display:mbDisplay]') {
+		items.push(['clear', () => {
+			this.childThatIsA(MicroBitDisplaySlotMorph).display =
+				(new Array(25)).fill(false);
+			this.rerender();
+		}, 'set all LEDs off']);
+		items.push('-');
+	}
+
 	items.push(['duplicate', () => {
 		var dup = copy();
 		if (isCommand && dup.nextBlock()) dup.nextBlock().destroy();
