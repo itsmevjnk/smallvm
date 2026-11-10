@@ -581,6 +581,7 @@
 		padding: var(--space-12);
 
 		font-family: monospace;
+		text-align: left;
 	}
 }
 
