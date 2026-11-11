@@ -31,3 +31,7 @@ function newLabel(text) {
 	label.innerText = text;
 	return label;
 };
+
+function slugify(string) {
+	return string.trim().toLowerCase().replace(/\s+/g, '-')
+}

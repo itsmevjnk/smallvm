@@ -240,22 +240,25 @@ class LibraryInfoWindow extends FloatingWindow {
 
 	moduleCategoryInput() {
 		let button = newElement('button');
-		button.style.backgroundColor =
-			Categories.colorFor(this.library.moduleCategory);
 		button.setAttribute('data-value', this.library.moduleCategory);
+		button.classList.add('window__library-color-button');
+		button.classList.add('--' + slugify(this.library.moduleCategory));
 		button.onclick = (event) => {
 			Menus.popUpFromDescriptor(
 				{
 					selector: 'categoryColor',
 					type: 'context',
 					items: Categories.categoryNames().map(catName => {
-						let item = newDiv('category--color-item'),
-							color = newDiv('color--rectangle'),
-							label = newElement('span');
-						color.style.backgroundColor = Categories.colorFor(catName);
+						let item = newDiv('menu__button-color'),
+							color = newDiv('menu__button-color-sample'),
+							label = newElement('l-'),
+							colorSlug = slugify(catName);
+
+						color.classList.add(`--${colorSlug}`);
 						label.innerText = catName;
 						item.appendChild(color);
 						item.appendChild(label);
+
 						return {
 							label: item,
 							action: () => {
