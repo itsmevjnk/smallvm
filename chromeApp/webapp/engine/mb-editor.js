@@ -6,7 +6,7 @@
 
 // mb-editor.js - MicroBlocks top-level editor.
 
-/* global MB_BlockSearchBox, MB_Files, MB_FilePicker, MB_LibraryImportDialog, MB_LibraryInfoDialog, MB_Module, MB_Parser, MB_Specs, MB_Project, Color, Point, BlockMorph, ReporterBlockMorph, ScriptsMorph, ScrollFrameMorph, StringMorph, HatBlockMorph, SpeechBubbleMorph, TextMorph, ZOOM, world, askChrome, blockScale, chromeDrawnMenu, chromeMenuFor, clipboardText, cropTransparent, errorFrame, errorSite, fireIDEEvent, fixEmbeddedQuotes, fixedCallArgs, forEachExpression, htmlText, isMobile, isReportableError, localized, readGPClipboard, setClipboardBuffer, uniqueNameNotIn, waitMSecs */
+/* global MB_BlockSearchBox, ColorSlotPickerMorph, MB_Files, MB_FilePicker, MB_LibraryImportDialog, MB_LibraryInfoDialog, MB_Module, MB_Parser, MB_Specs, MB_Project, Color, Point, BlockMorph, ReporterBlockMorph, ScriptsMorph, ScrollFrameMorph, StringMorph, HatBlockMorph, SpeechBubbleMorph, TextMorph, ZOOM, world, askChrome, blockScale, detect, chromeDrawnMenu, chromeMenuFor, clipboardText, cropTransparent, errorFrame, errorSite, fireIDEEvent, fixEmbeddedQuotes, fixedCallArgs, forEachExpression, htmlText, isMobile, isReportableError, localized, readGPClipboard, setClipboardBuffer, uniqueNameNotIn, waitMSecs */
 
 class MB_Editor {
 	constructor() {
@@ -2556,9 +2556,15 @@ class MB_Editor {
 		world.zoom(Math.max(Math.min(percent, 250), 50) / 100);
 		if ((ZOOM !== oldZoom) && this.scripts) this.relayoutBlocks();
 		if (ZOOM !== oldZoom) {
-			// An open picker was sized at the old zoom.
+			// An open file or colour picker was sized at the old zoom.
 			const picker = (typeof MB_FilePicker !== 'undefined') && MB_FilePicker.findOpen(world);
 			if (picker) picker.removeFromOwner();
+			const colorPicker = detect(world.children, (m) => m instanceof ColorSlotPickerMorph);
+			if (colorPicker) {
+				// an edit in one of its boxes would go on taking keys
+				if (world.cursor && colorPicker.allChildren().includes(world.cursor.target)) world.stopEditing();
+				colorPicker.destroy();
+			}
 		}
 		// A wheel notch scrolls 120 screen pixels, as in GP; morphic scrolls in scene units.
 		// Both settings objects: the first touch event swaps MorphicPreferences to the second.
