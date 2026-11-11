@@ -24,8 +24,11 @@
 
 // RECENT is a threshold for waking up tasks waiting on timers
 // The timer can be up to this many usecs past the wakeup time.
+// It must exceed the longest time a primitive can block the VM, or a waiting task
+// is not woken until the clock wraps (~71.6 minutes). It must also stay well under
+// 2^32 usecs minus the longest wait (waitMillis allows 60 minutes).
 
-#define RECENT 10000000
+#define RECENT 30000000
 
 // Interpreter State
 
