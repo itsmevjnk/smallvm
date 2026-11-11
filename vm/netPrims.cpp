@@ -540,7 +540,11 @@ static OBJ primHttpConnect(int argCount, OBJ *args) {
 	const int timeout = 3000;
 	int ok;
 
-	httpClient.setTimeout(timeout);
+	#if defined(ARDUINO_ARCH_ESP32)
+		httpClient.setTimeout(timeout / 1000); // the ESP32 core takes seconds here
+	#else
+		httpClient.setTimeout(timeout);
+	#endif
 	ok = httpClient.connect(host, port); // returns once connected or failed
 
 	#if defined(ESP8266)
@@ -583,6 +587,11 @@ static OBJ primHttpSecureConnect(int argCount, OBJ *args) {
 	int ok;
 
 	activeHttpClient->setTimeout(timeout);
+	#if HAS_HTTPS_CLIENT
+		// through a Client pointer the call above only sets the read timeout;
+		// the connect timeout is set here, in seconds
+		httpsClient.setTimeout(timeout / 1000);
+	#endif
 	ok = activeHttpClient->connect(host, port); // returns once connected or failed
 
 	if (!(ok && activeHttpClient->connected())) {
