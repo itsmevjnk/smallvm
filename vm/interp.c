@@ -28,7 +28,7 @@
 // is not woken until the clock wraps (~71.6 minutes). It must also stay well under
 // 2^32 usecs minus the longest wait (waitMillis allows 60 minutes).
 
-#define RECENT 30000000
+#define RECENT 60000000
 
 // Interpreter State
 
