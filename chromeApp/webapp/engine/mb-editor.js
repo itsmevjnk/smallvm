@@ -1455,13 +1455,17 @@ class MB_Editor {
 		}
 	}
 
-	exportLibrary(libName) {
+	async exportLibrary(libName) {
 		// A library's own source in a file named after it.
 
 		this.endOpenEdit();
 		let lib = this.project.libraryNamed(libName);
 		if (!lib) return;
-		this.saveTextAsFile(lib.codeString(this.project), lib.moduleName + '.ubl');
+		try {
+			await this.saveFileWithDialog(lib.codeString(this.project), lib.moduleName + '.ubl', 'library', 'text/plain');
+		} catch (e) {
+			this.reportError(e); // e.g. a folder the browser may not write to
+		}
 	}
 
 	showLibraryInfo(libName, forEditing = this.devMode()) {
