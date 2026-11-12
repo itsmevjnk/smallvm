@@ -17,7 +17,6 @@ TODO
 [ ] Nat? Revisar: windowButtons.setAttribute('data-undraggable', true); (a buttons)
 [ ] Nat: Moviment estrany del canvas al col·lapsar i expandir
 [ ] Considerar un sol component per a controls de zoom (scripts pane, graph window)
-[ ] Kram + Nat: Estilar progress
 [ ] Kram + Nat: Netejar imatges no usades
 [ ] Kram: Unificar els arxius CSS en un sol import
 [ ] Kram: Botó de biblioteca tallat en català: ( Afegeix una bibliotec )
@@ -57,3 +56,4 @@ Menus
 [ ] Blocks -> Context menu: Show and Hide, or just a check?
 [x] Glitch, al clicar al menú fa un joc estrany amb el ✔
 [ ] Show and Hide Boardie instead Open and Close
+[ ] Kram: Estilar progress
