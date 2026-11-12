@@ -172,9 +172,9 @@ IDE.populateTopBar = function (container) {
 		'ide.downloadProgress',
 		(e) => {
 			let colors = [
-				['lightgreen', 'var(--color-blue-grey-850)'],
-				['green', 'var(--color-blue-grey-850)'],
-				['darkgreen', 'var(--color-blue-grey-850)']
+				['var(--color-boolean-green)', 'var(--color-blue-grey-850)'],
+				['var(--color-boolean-green)', 'var(--color-blue-grey-850)'],
+				['var(--color-boolean-green)', 'var(--color-blue-grey-850)']
 			];
 			if (typeof e.detail.value != 'object') { return; }
 			let phase = e.detail.value[0];
