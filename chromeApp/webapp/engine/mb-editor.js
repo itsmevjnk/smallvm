@@ -2589,6 +2589,7 @@ class MB_Editor {
 			this.blockSize = percent;
 		}
 		await this.codeManager.syncScripts();
+		IDE.recreateScriptControls();
 	}
 
 	zoomIn() {

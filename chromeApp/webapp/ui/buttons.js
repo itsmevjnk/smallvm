@@ -111,9 +111,7 @@ const Buttons = {
 		action: () => {
 			GP.apiCall('scripts.zoomIn', [], () => { IDE.recreateScriptControls(); });
 		},
-		disabled: () => {
-			return Graph.step >= Graph.stepRange[Graph.stepRange.length];
-		}
+		disabled: () => { return IDE.blockSizePercent() >= 250; }
 	},
 
 	// Graph buttons
