@@ -17,7 +17,7 @@ class FileBrowser extends FloatingWindow {
 		let forLibraries = (extensionList.includes('.ubl'));
 
 		super({
-			title: 'Load ' + ( forLibraries ? 'Library' : 'Project'),
+			title: (forLibraries ? 'Add Library' : 'Open Project'),
 			body: contents,
 			minHeight: 400,
 			minWidth: forLibraries ? 720 : 480,
