@@ -1,6 +1,7 @@
 TODO
 ====
 
+
 [x] Crear un TODO en català perquè no l'entengui ningú més
 [x] Afegir classe a blocs alternatius del menu contextual de blocs
 [x] Estilitzar ↑↑↑ perquè siguin d'una mida raonable
@@ -31,6 +32,7 @@ Windows
 [ ] Al clicar en una finestra ha de passar a primer pla
 [ ] Scrollbars as CSS variable to keep consistency
 
+
 Opció?
 - Decidir dues o tres amplades estàndard de finestra (small, medium, large)
 - Un cop tenir l'amplada, podem assignar amb CSS l'alçada (heigth: min-content)
@@ -46,6 +48,7 @@ Spinner
 =======
 [ ] Do not switch browser tabs label
 [ ] Make ESC work
+[ ] Windows appear on top of the overlay loader window
 
 
 Menus
@@ -56,4 +59,4 @@ Menus
 [ ] Blocks -> Context menu: Show and Hide, or just a check?
 [x] Glitch, al clicar al menú fa un joc estrany amb el ✔
 [ ] Show and Hide Boardie instead Open and Close
-[ ] Kram: Estilar progress
+[ ] Kram: Estilar progress diferent
