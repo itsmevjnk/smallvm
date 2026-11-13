@@ -1,27 +1,25 @@
 module 'Planet X Wireless' Control
 author 'Elecfreaks Team'
-version 2 3
-depends '_Planet X Support' 
-tags wifi smartiot network http joystick i2c 
-choices planetXJoystickAxis RX RY LX LY 
-choices planetXJoystickButton '⬆' '⬇' '⬅' '➡' '▷' '☐' '𐤏' '⨉' L1 R1 L2 R2 SELECT START L3 R3 
+version 2 4
+depends '_Planet X Support'
+tags wifi smartiot network http joystick i2c
+choices planetXJoystickAxis RX RY LX LY
+choices planetXJoystickButton '⬆' '⬇' '⬅' '➡' '▷' '☐' '𐤏' '⨉' L1 R1 L2 R2 SELECT START L3 R3
 description 'ESP8266 WiFi
 Set the J port and module baud rate before using WiFi or SmartIoT.
+
 WiFi uses standard hardware serial on micro:bit V2 and Nezha ESP32.
-The Planet X MP3 and ESP8266 WiFi modules cannot be used at the same time.
-Reinitialize the corresponding module when switching between them.
-micro:bit V1 supports the I2C joystick, but not the bidirectional WiFi UART.
+micro:bit V1 does not the bidirectional WiFi UART.
+
 WIKI:
 https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05036
 
 SmartIoT
 
-I2C rocker
 WIKI (joystick):
 https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05068/'
-variables _planetX_wifiConnected _planetX_wifiLastResponse _planetX_smartiot_connected _planetX_smartiot_sendMsg _planetX_smartiot_lastSendTime _planetX_smartiot_switchListenFlag _planetX_smartiot_switchStatus _planetX_smartiot_switchKnown _planetX_smartiot_requestBusy _planetX_smartiot_switchOnEvent _planetX_smartiot_switchOffEvent _planetX_smartiot_host _planetX_smartiot_port _planetX_smartiot_token _planetX_smartiot_topic _planetX_smartiot_lastResponse 
-variables _planetX_wifiReady
-variables _planetX_joystickHasRequest _planetX_joystickLastRequest
+
+variables _planetX_wifiConnected _planetX_wifiReady _planetX_wifiLastResponse _planetX_smartiot_connected _planetX_smartiot_sendMsg _planetX_smartiot_lastSendTime _planetX_smartiot_switchListenFlag _planetX_smartiot_switchStatus _planetX_smartiot_switchKnown _planetX_smartiot_requestBusy _planetX_smartiot_switchOnEvent _planetX_smartiot_switchOffEvent _planetX_smartiot_host _planetX_smartiot_port _planetX_smartiot_token _planetX_smartiot_topic _planetX_smartiot_lastResponse
 
   spec ' ' 'planetX_wifiInit' 'WiFi module set port _ baud rate _' 'menu.planetXPort num' 'J1' 115200
   spec ' ' 'planetX_wifiConnect' 'WiFi connect SSID _ password _' 'str str' 'your_ssid' 'your_password'
@@ -36,18 +34,11 @@ variables _planetX_joystickHasRequest _planetX_joystickLastRequest
   spec 'h' 'planetX_iotSwitchEvent' 'when SmartIoT switch is _' 'menu.planetXOnOff' 'on'
   spec 'r' 'planetX_smartIotSwitchState' 'SmartIoT switch is _' 'menu.planetXOnOff' 'on'
   space
-  spec 'r' 'planetX_joystickButton' 'joystick button _ is pressed' 'menu.planetXJoystickButton' '⬆'
-  spec 'r' 'planetX_joystickAnalog' 'joystick _ analog value' 'menu.planetXJoystickAxis' 'LX'
-  space
   spec 'r' '_planetX_wifiAppendRead' '_planetX_wifiAppendRead'
   spec 'r' '_planetX_wifiRequest' '_planetX_wifiRequest _ _ _' 'auto auto auto' 0 0 0
   spec 'r' '_planetX_wifiWaitFor' '_planetX_wifiWaitFor _ _' 'auto auto' 0 0
   spec 'r' '_planetX_wifiWriteAT' '_planetX_wifiWriteAT _' 'auto' 0
-  spec 'r' '_planetX_attentionCode' '_planetX_attentionCode _' 'auto' 0
-  spec 'r' '_planetX_attentionReadByte' '_planetX_attentionReadByte'
-  spec 'r' '_planetX_attentionRequest' '_planetX_attentionRequest _' 'auto' 0
-  spec 'r' '_planetX_attentionWaitReady' '_planetX_attentionWaitReady'
-  spec 'r' '_planetX_joystickAnalogCode' '_planetX_joystickAnalogCode _' 'auto' 0
+  space
   spec 'r' '_planetX_smartiotATCommand' '_planetX_smartiotATCommand _' 'auto' 0
   spec 'r' '_planetX_smartiotATRequest' '_planetX_smartiotATRequest _ _ _' 'auto auto auto' 0 0 0
   spec ' ' '_planetX_smartiotEnsureDefaults' '_planetX_smartiotEnsureDefaults'
@@ -55,73 +46,6 @@ variables _planetX_joystickHasRequest _planetX_joystickLastRequest
   spec 'r' '_planetX_smartiotStatusCommand' '_planetX_smartiotStatusCommand'
   spec ' ' '_planetX_smartiotSwitchLoop' '_planetX_smartiotSwitchLoop'
   spec ' ' '_planetX_smartiotUpdateSwitchFromResponse' '_planetX_smartiotUpdateSwitchFromResponse _ _' 'auto auto' 0 0
-
-to '_planetX_attentionCode' button {
-  if (button == '⬆') {return 5}
-  if (button == '⬇') {return 7}
-  if (button == '⬅') {return 8}
-  if (button == '➡') {return 6}
-  if (button == '▷') {return 13}
-  if (button == '☐') {return 16}
-  if (button == '𐤏') {return 14}
-  if (button == '⨉') {return 15}
-  if (button == 'L1') {return 11}
-  if (button == 'R1') {return 12}
-  if (button == 'L2') {return 9}
-  if (button == 'R2') {return 10}
-  if (button == 'SELECT') {return 1}
-  if (button == 'START') {return 4}
-  if (button == 'L3') {return 2}
-  if (button == 'R3') {return 3}
-  return 0
-}
-
-to '_planetX_attentionReadByte' {
-  local 'response' ('[data:newByteArray]' 1 0)
-  if (('[sensors:i2cRead]' 8 response) != 1) {
-    return -1
-  }
-  return (at 1 response)
-}
-
-to '_planetX_attentionRequest' command {
-  if (not ('_planetX_i2cAcquire')) {return -1}
-  local 'board' (boardType)
-  local 'pace' (or (board == 'micro:bit v2') (board == 'micro:bit'))
-  if (and pace _planetX_joystickHasRequest) {
-    comment 'A 10 ms gap improved sequential micro:bit reads in the hardware comparison. Recheck under the FIFO lock so parallel callers cannot bypass the gap.'
-    local 'remaining' (10 - (millisSince _planetX_joystickLastRequest))
-    if (remaining > 0) {waitMillis remaining}
-  }
-  '_planetX_i2cSetClock'
-  local 'value' -1
-  if ('_planetX_attentionWaitReady') {
-    '[sensors:i2cWrite]' 8 command
-    value = ('_planetX_attentionReadByte')
-  }
-  if pace {
-    _planetX_joystickLastRequest = (millisOp)
-    _planetX_joystickHasRequest = true
-  }
-  '_planetX_i2cRelease'
-  return value
-}
-
-to '_planetX_attentionWaitReady' {
-  local 'start' (millisOp)
-  repeatUntil (('_planetX_attentionReadByte') == 16) {
-    if ((millisSince start) >= 250) {return false}
-    waitMillis 1
-  }
-  return true
-}
-
-to '_planetX_joystickAnalogCode' axis {
-  if (axis == 'RX') {return 25}
-  if (axis == 'RY') {return 26}
-  if (axis == 'LY') {return 28}
-  return 27
-}
 
 to '_planetX_smartiotATCommand' path {
   '_planetX_smartiotEnsureDefaults'
@@ -288,27 +212,6 @@ to planetX_iotSwitchEvent state {
     }
   }
   return false
-}
-
-to planetX_joystickAnalog axis {
-  local 'value' ('_planetX_attentionRequest' ('_planetX_joystickAnalogCode' axis))
-  if (value < 0) {
-    return 0
-  }
-  if (or (axis == 'RY') (axis == 'LY')) {
-    if (value != 0) {value += 1}
-  } else {
-    if (and (value != 128) (value != 0)) {value += 1}
-  }
-  return (value * 4)
-}
-
-to planetX_joystickButton button {
-  local 'code' ('_planetX_attentionCode' button)
-  if (code == 0) {
-    return false
-  }
-  return (('_planetX_attentionRequest' code) == 1)
 }
 
 to planetX_setSmartIotUploadData n1 n2 n3 n4 n5 n6 n7 n8 {
