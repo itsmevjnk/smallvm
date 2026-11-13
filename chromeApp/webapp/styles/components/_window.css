@@ -88,7 +88,6 @@
 		padding: var(--space-4) var(--space-12);
 
 		text-align: center;
-		font-size: var(--fontSize-16);
 		border: none;
 		border-radius: var(--borderRadius-4);
 		background-color: var(--color-white);
@@ -108,7 +107,6 @@
 		font-family: Arial, Helvetica, sans-serif;
 
 		text-align: center;
-		font-size: var(--fontSize-16);
 		border: none;
 		border-radius: var(--borderRadius-4);
 		background-color: var(--color-white);
@@ -343,7 +341,6 @@
 	button {
 		padding: var(--space-6) var(--space-8);
 
-		font-size: var(--fontSize-16);
 		border-radius: var(--borderRadius-4);
 		transition: all var(--duration-200);
 
@@ -602,8 +599,6 @@
 	li {
 		position: relative;
     padding-left: var(--space-10);
-
-		font-size: var(--fontSize-16);
 
     &::before {
       content: '';
