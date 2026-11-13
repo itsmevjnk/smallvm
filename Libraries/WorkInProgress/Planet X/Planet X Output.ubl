@@ -1,11 +1,26 @@
-module 'Planet X Display' Output
+module 'Planet X Output' Output
 author 'Elecfreaks Team'
 version 2 3
-depends '_Planet X Support' 
-choices planetXNeoColor red orange yellow green blue indigo violet purple white black 
-choices planetXNeoMode 'RGB(GRB order)' RGBW 'RGB(RGB order)' 
-choices planetXMatrixEmoji smile 'crying face' 'neutral face' heart 'check mark' cross 
-description 'Nixie tube
+depends '_Planet X Support'
+choices planetXNeoColor red orange yellow green blue indigo violet purple white black
+choices planetXNeoMode 'RGB(GRB order)' RGBW 'RGB(RGB order)'
+choices planetXMatrixEmoji smile 'crying face' 'neutral face' heart 'check mark' cross
+description 'laser
+WIKI:
+https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05013
+
+fan
+WIKI (motorFan):
+https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05014
+
+LED
+WIKI:
+https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05009
+https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05010
+https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05011
+https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05012
+
+Nixie tube
 WIKI (TM1637):
 https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05026
 
@@ -22,6 +37,10 @@ WIKI (matrix):
 https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05029'
 variables _planetX_tmClockPin _planetX_tmDataPin _planetX_tmBrightness _planetX_tmDigits _planetX_npPixels _planetX_npPin _planetX_npHasWhite _planetX_npRangeStart _planetX_npRangeLength _planetX_matrixReady _planetX_matrixBuf _planetX_oledReady _planetX_oledAddr _planetX_oledBusy _planetX_oledLines
 
+  spec ' ' 'planetX_ledSwitch' 'LED _ turn _ : brightness _ %' 'menu.planetXPort bool num' 'J1' true 100
+  spec ' ' 'planetX_motorFanSwitch' 'fan _ turn _ : speed _ %' 'menu.planetXPort bool num' 'J1' false 100
+  spec ' ' 'planetX_laserSwitch' 'laser module _ turn _' 'menu.planetXPort bool' 'J1' true
+  space
   spec ' ' 'planetX_tm1637Create' 'numeric display set port _' 'menu.planetXPort' 'J1'
   spec ' ' 'planetX_tm1637ShowNumber' 'numeric display show _ (0-9999)' 'num' 1234
   spec ' ' 'planetX_tm1637ShowDP' 'numeric display digit _ (1-4) decimal point show _' 'num bool' 2 true
@@ -49,6 +68,9 @@ variables _planetX_tmClockPin _planetX_tmDataPin _planetX_tmBrightness _planetX_
   spec ' ' 'planetX_matrixEmoji' '5x5 matrix display emoji _' 'menu.planetXMatrixEmoji' 'smile'
   spec ' ' 'planetX_matrixRefresh' 'refresh matrix display'
   spec ' ' 'planetX_matrixClear' 'clear matrix display'
+  space
+  spec ' ' '_planetX_ledBrightness' '_planetX_ledBrightness _ _ _' 'auto auto auto' 0 0 0
+  spec ' ' '_planetX_motorFan' '_planetX_motorFan _ _ _' 'auto auto auto' 0 0 0
   space
   spec 'r' '_planetX_colorFromRGB' '_planetX_colorFromRGB _ _ _' 'auto auto auto' 0 0 0
   spec ' ' '_planetX_neopixelRainbow' '_planetX_neopixelRainbow _ _' 'auto auto' 0 0
@@ -724,5 +746,42 @@ to planetX_tm1637ShowNumber n {
   atPut 2 _planetX_tmDigits ('_planetX_tmSegmentsForNum' tens)
   atPut 1 _planetX_tmDigits ('_planetX_tmSegmentsForNum' ones)
   '_planetX_tmRefresh'
+}
+
+to planetX_laserSwitch port on {
+  local 'pin' ('_planetX_jPortPin' port 'B')
+  digitalWriteOp pin on
+}
+
+to planetX_ledSwitch port on optionalBrightness {
+  '_planetX_ledBrightness' port on (argOrDefault 3 100)
+}
+
+to planetX_motorFanSwitch port on optionalSpeed {
+  '_planetX_motorFan' port on (argOrDefault 3 100)
+}
+
+to '_planetX_ledBrightness' port on optionalBrightness {
+  local 'brightness' (argOrDefault 3 100)
+  brightness = (maximum 0 (minimum brightness 100))
+  local 'pin' ('_planetX_jPortPin' port 'A')
+  if (and on (brightness > 0)) {
+    analogWriteOp pin ((1023 * brightness) / 100)
+  } else {
+    analogWriteOp pin 0
+    digitalWriteOp pin false
+  }
+}
+
+to '_planetX_motorFan' port on optionalSpeed {
+  local 'speed' (argOrDefault 3 100)
+  speed = (maximum 0 (minimum speed 100))
+  local 'pin' ('_planetX_jPortPin' port 'A')
+  if (and on (speed > 0)) {
+    analogWriteOp pin ((1023 * speed) / 100)
+  } else {
+    analogWriteOp pin 0
+    digitalWriteOp pin false
+  }
 }
 

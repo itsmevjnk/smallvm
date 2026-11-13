@@ -1,71 +1,27 @@
-module 'Planet X Execute' Control
+module 'Planet X MP3' Output
 author 'Elecfreaks Team'
-version 2 4
-depends '_Planet X Support' 
-choices planetXMP3Action play stop 'next track' 'previous track' pause 
-description 'laser
-WIKI:
-https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05013
-
-fan
-WIKI (motorFan):
-https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05014
-
-LED
-WIKI:
-https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05009
-https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05010
-https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05011
-https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05012
-
-MP3
-The Planet X MP3 and ESP8266 WiFi modules cannot be used at the same time.
+version 1 0
+depends '_Planet X Support'
+choices planetXMP3Action play stop  pause 'next track' 'previous track'
+description 'Note: The Planet X MP3 and ESP8266 WiFi modules cannot be used at the same time.
 Reinitialize the corresponding module when switching between them.
+
 WIKI:
 https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05038'
-variables _planetX_mp3Pin 
+variables _planetX_mp3Pin
 
-  spec ' ' 'planetX_laserSwitch' 'laser module _ turn _' 'menu.planetXPort bool' 'J1' true
-  space
-  spec ' ' 'planetX_motorFanSwitch' 'fan _ turn _ : speed _ %' 'menu.planetXPort bool num' 'J1' false 100
-  space
-  spec ' ' 'planetX_ledSwitch' 'LED _ turn _ : brightness _ %' 'menu.planetXPort bool num' 'J1' true 100
-  space
   spec ' ' 'planetX_mp3SetPort' 'MP3 set port _' 'menu.planetXPort' 'J1'
-  spec ' ' 'planetX_mp3SetVolume' 'MP3 set volume _ (0-25)' 'num' 25
-  spec ' ' 'planetX_mp3PlayFolder' 'MP3 play folder _ file _ : repeat _' 'num num bool' 1 1 false
+  space
   spec ' ' 'planetX_mp3PlayTrack' 'MP3 play track _ : repeat _' 'num bool' 1 false
+  spec ' ' 'planetX_mp3Execute' 'MP3 _' 'menu.planetXMP3Action' 'play'
+  spec ' ' 'planetX_mp3PlayFolder' 'MP3 play folder _ file _ : repeat _' 'num num bool' 1 1 false
   spec ' ' 'planetX_mp3LoopFolder' 'MP3 loop folder _' 'num' 1
-  spec ' ' 'planetX_mp3Execute' 'MP3 execute _' 'menu.planetXMP3Action' 'play'
+  space
+  spec ' ' 'planetX_mp3SetVolume' 'MP3 set volume _ (0-25)' 'num' 25
+  space
   spec ' ' '_planetX_mp3Ensure' '_planetX_mp3Ensure'
   spec ' ' '_planetX_mp3OpenPort' '_planetX_mp3OpenPort _' 'auto' 'J1'
   spec ' ' '_planetX_mp3Send' '_planetX_mp3Send _ _ _' 'auto auto auto' 0 0 0
-  spec ' ' '_planetX_ledBrightness' '_planetX_ledBrightness _ _ _' 'auto auto auto' 0 0 0
-  spec ' ' '_planetX_motorFan' '_planetX_motorFan _ _ _' 'auto auto auto' 0 0 0
-
-to '_planetX_ledBrightness' port on optionalBrightness {
-  local 'brightness' (argOrDefault 3 100)
-  brightness = (maximum 0 (minimum brightness 100))
-  local 'pin' ('_planetX_jPortPin' port 'A')
-  if (and on (brightness > 0)) {
-    analogWriteOp pin ((1023 * brightness) / 100)
-  } else {
-    analogWriteOp pin 0
-    digitalWriteOp pin false
-  }
-}
-
-to '_planetX_motorFan' port on optionalSpeed {
-  local 'speed' (argOrDefault 3 100)
-  speed = (maximum 0 (minimum speed 100))
-  local 'pin' ('_planetX_jPortPin' port 'A')
-  if (and on (speed > 0)) {
-    analogWriteOp pin ((1023 * speed) / 100)
-  } else {
-    analogWriteOp pin 0
-    digitalWriteOp pin false
-  }
-}
 
 to '_planetX_mp3Ensure' {
   if (_planetX_mp3Pin == 0) {
@@ -115,19 +71,6 @@ to '_planetX_mp3Send' cmd arg1 arg2 {
   waitMillis 100
 }
 
-to planetX_laserSwitch port on {
-  local 'pin' ('_planetX_jPortPin' port 'B')
-  digitalWriteOp pin on
-}
-
-to planetX_ledSwitch port on optionalBrightness {
-  '_planetX_ledBrightness' port on (argOrDefault 3 100)
-}
-
-to planetX_motorFanSwitch port on optionalSpeed {
-  '_planetX_motorFan' port on (argOrDefault 3 100)
-}
-
 to planetX_mp3Execute action {
   local 'cmd' (hexToInt '0D')
   if (or (action == 'stop') (action == '停止')) {
@@ -174,4 +117,3 @@ to planetX_mp3SetVolume volume {
   volume = (maximum 0 (minimum volume 25))
   '_planetX_mp3Send' (hexToInt '06') 0 volume
 }
-
