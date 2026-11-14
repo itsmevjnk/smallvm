@@ -349,10 +349,10 @@ class MB_CodeManager {
 		for (const entry of this.chunkIDs.values()) {
 			inUse.add(entry[0]);
 		}
-		for (let id = 0; id < 256; id++) {
+		for (let id = 0; id < 255; id++) { // the VM has 255 chunks, so 255 is not an ID
 			if (!inUse.has(id)) return id;
 		}
-		throw new Error('Too many code chunks (functions and scripts). Max is 256.');
+		throw new Error('Too many code chunks (functions and scripts). Max is 255.');
 	}
 
 	ensureChunkIdFor(aBlock) {
