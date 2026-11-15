@@ -1390,8 +1390,6 @@ static inline int gamma(int val) {
 	// neoPixelMax determines the max brightness (and power draw!) of each NeoPixel color channel,
 	// which is about (neoPixelMax / 255) * 20 mA per color channel.
 
-return val;
-
 	if (255 == neoPixelMax) return (val & 0xFF); // no gamma correction if max is 255
 
 	#if defined(ARDUINO_Mbits)
