@@ -2,7 +2,7 @@ module 'Planet X MP3' Output
 author 'Elecfreaks Team'
 version 1 0
 depends '_Planet X Support'
-choices planetXMP3Action play stop  pause 'next track' 'previous track'
+choices planetXMP3Action play stop pause 'next track' 'previous track'
 description 'Note: The Planet X MP3 and ESP8266 WiFi modules cannot be used at the same time.
 Reinitialize the corresponding module when switching between them.
 
@@ -23,14 +23,12 @@ variables _planetX_mp3Pin
   spec ' ' '_planetX_mp3OpenPort' '_planetX_mp3OpenPort _' 'auto' 'J1'
   spec ' ' '_planetX_mp3Send' '_planetX_mp3Send _ _ _' 'auto auto auto' 0 0 0
 
-to '_planetX_mp3Ensure' {
-  if (_planetX_mp3Pin == 0) {
-    '_planetX_mp3OpenPort' 'J1'
-  }
+to _planetX_mp3Ensure {
+  if (_planetX_mp3Pin == 0) {_planetX_mp3OpenPort 'J1'}
 }
 
-to '_planetX_mp3OpenPort' port {
-  local 'txPin' ('_planetX_jPortPin' port 'B')
+to _planetX_mp3OpenPort port {
+  local 'txPin' (_planetX_jPortPin port 'B')
   local 'board' (boardType)
   if (or (board == 'micro:bit') (board == 'micro:bit v2')) {
     comment 'MP3 only needs output. Software serial is verified on micro:bit V2.'
@@ -40,15 +38,15 @@ to '_planetX_mp3OpenPort' port {
     }
     digitalWriteOp txPin true
   } else {
-    local 'rxPin' ('_planetX_jPortPin' port 'A')
+    local 'rxPin' (_planetX_jPortPin port 'A')
     '[serial:open]' 9600 rxPin txPin
   }
   _planetX_mp3Pin = txPin
   waitMillis 50
 }
 
-to '_planetX_mp3Send' cmd arg1 arg2 {
-  '_planetX_mp3Ensure'
+to _planetX_mp3Send cmd arg1 arg2 {
+  _planetX_mp3Ensure
   arg1 = (maximum 0 (minimum arg1 255))
   arg2 = (maximum 0 (minimum arg2 255))
   local 'msg' ('[data:makeList]' (hexToInt '7E') (hexToInt 'FF') 6 cmd 0 arg1 arg2 0 0 (hexToInt 'EF'))
@@ -82,38 +80,39 @@ to planetX_mp3Execute action {
   } (or (action == 'pause') (action == '暂停')) {
     cmd = (hexToInt '0E')
   }
-  '_planetX_mp3Send' cmd 0 0
+  _planetX_mp3Send cmd 0 0
 }
 
 to planetX_mp3LoopFolder folderNum {
   folderNum = (maximum 1 (minimum folderNum 99))
-  '_planetX_mp3Send' (hexToInt '17') 0 folderNum
+  _planetX_mp3Send (hexToInt '17') 0 folderNum
 }
 
 to planetX_mp3PlayFolder folderNum fileNum repeat {
   folderNum = (maximum 1 (minimum folderNum 99))
   fileNum = (maximum 1 (minimum fileNum 255))
-  '_planetX_mp3Send' (hexToInt '0F') folderNum fileNum
+  _planetX_mp3Send (hexToInt '0F') folderNum fileNum
   if repeat {
-    '_planetX_mp3Send' (hexToInt '19') 0 0
+    _planetX_mp3Send (hexToInt '19') 0 0
   }
 }
 
 to planetX_mp3PlayTrack tracking repeat {
   tracking = (maximum 1 (minimum tracking 255))
-  '_planetX_mp3Send' (hexToInt '03') 0 tracking
-  '_planetX_mp3Send' (hexToInt '0D') 0 0
+  _planetX_mp3Send (hexToInt '03') 0 tracking
+  _planetX_mp3Send (hexToInt '0D') 0 0
   if repeat {
-    '_planetX_mp3Send' (hexToInt '19') 0 0
+    _planetX_mp3Send (hexToInt '19') 0 0
   }
 }
 
 to planetX_mp3SetPort port {
-  '_planetX_mp3OpenPort' port
+  _planetX_mp3OpenPort port
   planetX_mp3SetVolume 25
 }
 
 to planetX_mp3SetVolume volume {
   volume = (maximum 0 (minimum volume 25))
-  '_planetX_mp3Send' (hexToInt '06') 0 volume
+  _planetX_mp3Send (hexToInt '06') 0 volume
 }
+
