@@ -1,6 +1,6 @@
-module 'Planet X Wireless' Control
+module 'Planet X Wireless' Comm
 author 'Elecfreaks Team'
-version 2 4
+version 2 5
 depends '_Planet X Support'
 tags wifi smartiot network http joystick i2c
 choices planetXJoystickAxis RX RY LX LY
@@ -15,9 +15,7 @@ WIKI:
 https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05036
 
 SmartIoT
-
-WIKI (joystick):
-https://wiki.elecfreaks.com/microbit/planetx-series/sensors/Plant_X_EF05068/'
+'
 
 variables _planetX_wifiConnected _planetX_wifiReady _planetX_wifiLastResponse _planetX_smartiot_connected _planetX_smartiot_sendMsg _planetX_smartiot_lastSendTime _planetX_smartiot_switchListenFlag _planetX_smartiot_switchStatus _planetX_smartiot_switchKnown _planetX_smartiot_requestBusy _planetX_smartiot_switchOnEvent _planetX_smartiot_switchOffEvent _planetX_smartiot_host _planetX_smartiot_port _planetX_smartiot_token _planetX_smartiot_topic _planetX_smartiot_lastResponse
 
