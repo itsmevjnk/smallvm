@@ -1551,6 +1551,14 @@ void hardwareInit() {
 	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15};
 	#define PIN_LED LED_BUILTIN
 
+#elif defined(ARDUINO_SAMD_NANO_33_IOT)
+	#define BOARD_TYPE "Arduino Nano 33 IoT"
+	#define DIGITAL_PINS 22
+	#define ANALOG_PINS 8
+	#define TOTAL_PINS 22
+	static const int analogPin[] = {A0, A1, A2, A3, A4, A5, A6, A7};
+	#define PIN_LED 13
+
 #else // unknown board
 
 	#define BOARD_TYPE "Unknown Board"
